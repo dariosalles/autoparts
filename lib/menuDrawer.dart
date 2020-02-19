@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuDrawer extends StatefulWidget {
   @override
@@ -6,6 +7,27 @@ class MenuDrawer extends StatefulWidget {
 }
 
 class _MenuDrawerState extends State<MenuDrawer> {
+
+  String email;
+
+  initState() {
+
+    getEmail();
+
+  }
+
+
+
+  getEmail() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+
+    setState(() {
+      email = sp.getString('email');
+    });
+
+    print('Email depois $email');
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -26,7 +48,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 color: Color.fromARGB(255, 214, 37, 1),
               ),
               accountName: Text("Dario"),
-              accountEmail: Text("dariosalles@gmail.com"),
+              accountEmail: Text(email ?? 'email'),
               currentAccountPicture: CircleAvatar(
                 child: Text('AP',
                 style: TextStyle(
@@ -121,4 +143,5 @@ class _MenuDrawerState extends State<MenuDrawer> {
 
 
   }
+
 }

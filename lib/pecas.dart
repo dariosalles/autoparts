@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'menuDrawer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // PAGE PEÇAS
 class Pecas extends StatefulWidget {
@@ -9,12 +11,35 @@ class Pecas extends StatefulWidget {
   _PecasState createState() => _PecasState();
 }
 
-class _PecasState extends State<Pecas> {
 
+
+class _PecasState extends State<Pecas>  {
+
+  String email;
 
   initState() {
 
     _inicialPecas();
+
+
+  }
+
+
+
+  // MENSAGENS AMIGAVEIS
+  mensagemToast(String msg) {
+
+    return Fluttertoast.showToast(
+
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 3,
+        backgroundColor: Color.fromARGB(255, 214, 37, 1),
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+
 
   }
 
@@ -77,6 +102,66 @@ class _PecasState extends State<Pecas> {
     setState(() {
       _quant = _items.length;
     });
+
+  }
+
+  // ADICIONA PRODUTO NO CARRINHO
+  addCart() async {
+
+
+    // String apiAddCart
+    String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=$_token';
+
+    print(apiAddCart);
+
+    http.Response response;
+
+    // campos teste
+    String _idusuario = '12345678';
+    String _email = 'dariosalles@gmail.com';
+    String _peca = 'Pastilha de Freio';
+    String _idpeca = '4';
+    String _quant = '1';
+    String _valor = '15.77';
+
+    Map<dynamic, dynamic> _corpo = {'id_usuario': _idusuario, 'email': _email, 'id_peca': _idpeca, 'peca': _peca, 'quant': _quant, 'valor': _valor };
+
+    response = await http.post(apiAddCart, body: _corpo);
+
+    print(response.body);
+
+
+    if (response.statusCode == 200) {
+
+
+      String _resultAddCart = response.body;
+
+
+      // print('Resultado: $_result');
+
+
+      if(_resultAddCart.isEmpty) {
+
+        print('Erro ao adicionar o produto. Tente novamente');
+        mensagemToast('Erro ao adicionar o produto. Tente novamente');
+
+
+      } else {
+
+       print('Produto adicionado com sucesso');
+       // Navigator.pushNamed(context, '/carrinho');
+
+      }
+
+
+
+    } else {
+
+      print('Erro 500');
+
+    }
+
+
 
   }
 
@@ -153,7 +238,6 @@ class _PecasState extends State<Pecas> {
                                     color: Colors.red,
                                     iconSize: 40,
                                     tooltip: 'Adicionar ao Carrinho',
-
                                     onPressed: () {
                                       showDialog(context: context,
                                       builder: (context){
@@ -175,6 +259,8 @@ class _PecasState extends State<Pecas> {
                                               child: Text("Sim"),
                                               onPressed: (){
                                                 print('sim');
+                                                addCart();
+                                                Navigator.pop(context);
                                               },
                                             ),
                                             RaisedButton(

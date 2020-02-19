@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInOne extends StatefulWidget {
   @override
@@ -18,6 +19,8 @@ class _SignInOneState extends State<SignInOne> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
 
+
+  // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
 
     return Fluttertoast.showToast(
@@ -35,9 +38,14 @@ class _SignInOneState extends State<SignInOne> {
   }
 
   getAcesso() async {
-    String email = _controllerEmail.text.trim();
-    String senha = _controllerSenha.text.trim();
-    String nome = 'Dario';
+
+    String email;
+    String senha;
+    String nome;
+
+    email = _controllerEmail.text.trim();
+    senha = _controllerSenha.text.trim();
+    nome = 'Dario';
 
     //print(email);
     //print(senha);
@@ -86,12 +94,26 @@ class _SignInOneState extends State<SignInOne> {
             nome = 'Dario';
           });
 
-          setState(() {
-            email = _controllerEmail.text;
-          });
+//          setState(() {
+//            email = _controllerEmail.text;
+//          });
 
           print('acesso permitido');
-          Navigator.pushNamed(context, '/pecas');
+
+              //guarda email
+              SharedPreferences sp = await SharedPreferences.getInstance();
+              sp.setString('email', email);
+
+              setState(() {
+                email = sp.getString('email');
+              });
+
+              print('Email sp antes $email');
+
+
+              Navigator.pushNamed(context, '/pecas');
+
+
 
         }
 
@@ -189,7 +211,7 @@ class _SignInOneState extends State<SignInOne> {
                   Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: MaterialButton(
-                      onPressed: (){
+                      onPressed: () async {
                         getAcesso();
                         //Navigator.pushNamed(context, '/pecas');
                       },//since this is only a UI app
@@ -213,42 +235,56 @@ class _SignInOneState extends State<SignInOne> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 20),
-                    child: Center(
-                      child: Text('Esqueceu a senha?',
-                        style: TextStyle(
-                            fontFamily: 'SFUIDisplay',
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                      children: <Widget>[
+                        MaterialButton(
+                          onPressed: (){
+                            getAcesso();
+                            //Navigator.pushNamed(context, '/pecas');
+                          },//since this is only a UI app
+                          child: Text('Esqueceu a senha?',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'SFUIDisplay',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          color: Colors.blue,
+                          //color: Color(0xffff2d55),
+                          elevation: 0,
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                          ),
                         ),
-                      ),
+                        MaterialButton(
+                          onPressed: (){
+                            //getAcesso();
+                            Navigator.pushNamed(context, '/cadastro');
+                          },//since this is only a UI app
+                          child: Text('Cadastrar',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'SFUIDisplay',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          color: Colors.deepOrange,
+                          //color: Color(0xffff2d55),
+                          elevation: 0,
+
+                          textColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      ],
+
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 30),
-                    child: MaterialButton(
-                      onPressed: (){
-                        //getAcesso();
-                        Navigator.pushNamed(context, '/cadastro');
-                      },//since this is only a UI app
-                      child: Text('Cadastrar',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'SFUIDisplay',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      color: Colors.deepOrange,
-                      //color: Color(0xffff2d55),
-                      elevation: 0,
-                      minWidth: 400,
-                      height: 50,
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                    ),
 
-                  )
                 ],
               ),
             ),
