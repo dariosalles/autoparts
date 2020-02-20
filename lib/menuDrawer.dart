@@ -25,7 +25,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
       email = sp.getString('email');
     });
 
-    print('Email depois $email');
+    //print('Email depois $email');
   }
 
   @override
