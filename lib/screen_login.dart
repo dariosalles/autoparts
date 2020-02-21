@@ -37,6 +37,66 @@ class _SignInOneState extends State<SignInOne> {
 
   }
 
+  Future<Map> _getAcessoF() async {
+
+    String email;
+    String senha;
+    String nome;
+
+    email = _controllerEmail.text.trim();
+    senha = _controllerSenha.text.trim();
+    nome = 'Dario';
+
+    String apiAcesso = 'https://blockchain.info/ticker';
+
+    //String apiAcesso = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_usuario.php?token=$token';
+
+    http.Response response = await http.post(apiAcesso, body: {'email': email, 'senha': senha});
+
+    print(json.decode(response.body));
+
+    return json.decode(response.body); // converte para <Map>
+
+    return retorno();
+  }
+
+  retorno() {
+
+    FutureBuilder<Map>(
+      future: _getAcessoF(),
+      builder: (context, snapshot){
+
+        String resultado;
+        switch (snapshot.connectionState) {
+          case ConnectionState.none :
+            print('none');
+            break;
+          case ConnectionState.waiting :
+            print('waiting');
+            resultado = 'Carregando...';
+            break;
+          case ConnectionState.active :
+            print('active');
+            break;
+          case ConnectionState.done :
+            print('done');
+            if(snapshot.error) {
+              resultado = 'Erro ao carregar os dados';
+            } else {
+              //String email = snapshot.data['email'];
+              //String nome = snapshot.data['nome'];
+              double valor = snapshot.data["BRL"]["buy"];
+              resultado = valor.toString();
+            }
+            break;
+        }
+        return Center(
+          child: Text(resultado)
+        );
+      },
+    );
+  }
+
   getAcesso() async {
 
     String email;
@@ -70,7 +130,9 @@ class _SignInOneState extends State<SignInOne> {
 
 //    var headers = response.headers;
 //
-      print(response.body);
+      //print(response.body);
+
+
 
 
       if (response.statusCode == 200) {
@@ -79,8 +141,7 @@ class _SignInOneState extends State<SignInOne> {
           _result = json.decode(response.body) as List;
         });
 
-        // print('Resultado: $_result');
-
+        print('Resultado:' + _result.toString());
 
         if(_result.isEmpty) {
 
@@ -93,10 +154,6 @@ class _SignInOneState extends State<SignInOne> {
           setState(() {
             nome = 'Dario';
           });
-
-//          setState(() {
-//            email = _controllerEmail.text;
-//          });
 
           print('acesso permitido');
 
