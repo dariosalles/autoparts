@@ -251,7 +251,7 @@ class _ContatoState extends State<Contato> {
           },
         ),
 
-        //bottomNavigationBar: BottomNav(),
+        ///bottomNavigationBar: BottomNav(),
     );
   }
 }
