@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'menuDrawer.dart';
 
 class Contato extends StatefulWidget {
   @override
@@ -106,15 +107,11 @@ class _ContatoState extends State<Contato> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: new GestureDetector(
-          child: new Icon(Icons.arrow_back_ios),
-          onTap: () {
-          Navigator.of(context).pop();
-    },
-    ),
+
           title: Text('Contato'),
         backgroundColor: Color.fromARGB(255, 204, 37, 1),
     ),
+      drawer: MenuDrawer(),
         body: LayoutBuilder(
           builder:
               (BuildContext context, BoxConstraints viewportConstraints) {
@@ -254,7 +251,7 @@ class _ContatoState extends State<Contato> {
           },
         ),
 
-        bottomNavigationBar: BottomNav(),
+        //bottomNavigationBar: BottomNav(),
     );
   }
 }

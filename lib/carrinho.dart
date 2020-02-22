@@ -1,4 +1,5 @@
 import 'package:auto_parts/botton_nav.dart';
+import 'package:auto_parts/menuDrawer.dart';
 import 'package:flutter/material.dart';
 
 class Carrinho extends StatefulWidget {
@@ -11,19 +12,15 @@ class _CarrinhoState extends State<Carrinho> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: new GestureDetector(
-            child: new Icon(Icons.arrow_back_ios),
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+
           title: Text('Carrinho'),
           backgroundColor: Color.fromARGB(255, 204, 37, 1),
         ),
+        drawer: MenuDrawer(),
         body: Container(
           child: Text('Lista do Carrinho'),
         ),
-      bottomNavigationBar: BottomNav(),
+      //bottomNavigationBar: BottomNav(),
     );
   }
 }
