@@ -83,6 +83,10 @@ class _ContatoState extends State<Contato> {
         // OK
           mensagemToast("Mensagem enviada com sucesso");
 
+          _controllerContatoNome.clear();
+          _controllerContatoEmail.clear();
+          _controllerContatoAssunto.clear();
+          _controllerContatoMsg.clear();
 
         }
 
@@ -111,125 +115,143 @@ class _ContatoState extends State<Contato> {
           title: Text('Contato'),
         backgroundColor: Color.fromARGB(255, 204, 37, 1),
     ),
-        body: Padding(
-          padding: EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Text('Entre com seus dados para falar conosco',
-                style: TextStyle(
-                    fontSize: 20,
+        body: LayoutBuilder(
+          builder:
+              (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints:
+                BoxConstraints(minHeight: viewportConstraints.maxHeight),
+                child: Column(children: [
+                  Stack(
+                    children: <Widget>[
 
-                    fontStyle: FontStyle.italic
-                ),
-            ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                controller: _controllerContatoNome,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Nome',
-                    prefixIcon: Icon(Icons.person),
-                    labelStyle: TextStyle(
-                        fontSize: 15
-                    )
-                ),
-              ),
-            ),
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Text('Entre com seus dados para falar conosco',
+                                style: TextStyle(
+                                    fontSize: 18,
 
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                controller: _controllerContatoEmail,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email),
-                    labelStyle: TextStyle(
-                        fontSize: 15
-                    )
-                ),
-              ),
-            ),
-            
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: TextFormField(
-                controller: _controllerContatoAssunto,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Assunto',
-                    prefixIcon: Icon(Icons.subject),
-                    labelStyle: TextStyle(
-                        fontSize: 15
-                    )
-                ),
-              ),
-            ),
-            
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                maxLines: 5,
-                controller: _controllerContatoMsg,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Mensagem',
-                    prefixIcon: Icon(Icons.message),
-                    labelStyle: TextStyle(
-                      fontSize: 15,
+                                    fontStyle: FontStyle.italic
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                controller: _controllerContatoNome,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'SFUIDisplay'
+                                ),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Nome',
+                                    prefixIcon: Icon(Icons.person),
+                                    labelStyle: TextStyle(
+                                        fontSize: 15
+                                    )
+                                ),
+                              ),
+                            ),
 
-                    )
-                ),
-              ),
-            ),
-            Padding(
-             padding: EdgeInsets.all(10),
-             child: MaterialButton(
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                controller: _controllerContatoEmail,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'SFUIDisplay'
+                                ),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Email',
+                                    prefixIcon: Icon(Icons.email),
+                                    labelStyle: TextStyle(
+                                        fontSize: 15
+                                    )
+                                ),
+                              ),
+                            ),
 
-               onPressed: () async {
-                 sendContato();
-                 //Navigator.pushNamed(context, '/pecas');
-               },//since this is only a UI app
-               child: Text('Enviar',
-                 style: TextStyle(
-                   fontSize: 15,
-                   fontFamily: 'SFUIDisplay',
-                   fontWeight: FontWeight.bold,
-                 ),
-               ),
-               color: Color.fromARGB(255, 214, 37, 1),
-               //color: Color(0xffff2d55),
-               elevation: 0,
-               minWidth: 400,
-               height: 50,
-               textColor: Colors.white,
-               shape: RoundedRectangleBorder(
-                   borderRadius: BorderRadius.circular(10)
-               ),
-             ),
-            )
-          ],
-          ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextFormField(
+                                controller: _controllerContatoAssunto,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'SFUIDisplay'
+                                ),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Assunto',
+                                    prefixIcon: Icon(Icons.subject),
+                                    labelStyle: TextStyle(
+                                        fontSize: 15
+                                    )
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: TextField(
+                                maxLines: 4,
+                                controller: _controllerContatoMsg,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'SFUIDisplay'
+                                ),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Mensagem',
+                                    prefixIcon: Icon(Icons.message),
+                                    labelStyle: TextStyle(
+                                      fontSize: 15,
+
+                                    )
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: MaterialButton(
+
+                                onPressed: () async {
+                                  sendContato();
+                                  //Navigator.pushNamed(context, '/pecas');
+                                },//since this is only a UI app
+                                child: Text('Enviar',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'SFUIDisplay',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                color: Color.fromARGB(255, 214, 37, 1),
+                                //color: Color(0xffff2d55),
+                                elevation: 0,
+                                minWidth: 400,
+                                height: 50,
+                                textColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+            );
+          },
         ),
 
         bottomNavigationBar: BottomNav(),
