@@ -89,6 +89,22 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 Row(
                   children: <Widget>[
                     IconButton(
+                      icon: Icon(Icons.card_membership),
+                      color: Colors.red,
+                      iconSize: 30,
+                      tooltip: 'Fornecedores',
+                      onPressed: () {
+                        print('Recarrega a pagina Fornecedores');
+                        Navigator.pushNamed(context, '/fornecedores');
+                      },
+                    ),
+                    Text("Fornecedores",
+                        style: optionStyle)
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    IconButton(
                       icon: Icon(Icons.shopping_cart),
                       color: Colors.red,
                       iconSize: 30,

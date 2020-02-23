@@ -6,6 +6,8 @@ import 'package:auto_parts/carrinho.dart';
 import 'package:auto_parts/screen_login.dart';
 import 'package:flutter/material.dart';
 
+import 'fornecedores.dart';
+
 
 
 void main() {
@@ -19,7 +21,8 @@ void main() {
       '/pecas': (context) => Pecas(),
       '/contato': (context) => Contato(),
       '/carrinho': (context) => Carrinho(),
-      '/cadastro': (context) => Cadastro()
+      '/cadastro': (context) => Cadastro(),
+      '/fornecedores': (context) => Fornecedores()
 
     },
   ));
