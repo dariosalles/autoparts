@@ -98,7 +98,7 @@ class _EsqueciState extends State<Esqueci> {
     return Scaffold(
       appBar: AppBar(
 
-        title: Text('Contato'),
+        title: Text('Esqueci a senha'),
         backgroundColor: Color.fromARGB(255, 204, 37, 1),
       ),
       drawer: MenuDrawer(),
