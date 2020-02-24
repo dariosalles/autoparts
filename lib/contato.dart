@@ -22,11 +22,11 @@ class _ContatoState extends State<Contato> {
 
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
-  gravity: ToastGravity.BOTTOM,
-  timeInSecForIos: 3,
-  backgroundColor: Color.fromARGB(255, 214, 37, 1),
-  textColor: Colors.white,
-  fontSize: 16.0
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 3,
+        backgroundColor: Color.fromARGB(255, 214, 37, 1),
+        textColor: Colors.white,
+        fontSize: 16.0
   );
 }
 

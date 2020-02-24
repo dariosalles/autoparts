@@ -6,6 +6,7 @@ import 'package:auto_parts/carrinho.dart';
 import 'package:auto_parts/screen_login.dart';
 import 'package:flutter/material.dart';
 
+import 'esqueci.dart';
 import 'fornecedores.dart';
 
 
@@ -22,7 +23,8 @@ void main() {
       '/contato': (context) => Contato(),
       '/carrinho': (context) => Carrinho(),
       '/cadastro': (context) => Cadastro(),
-      '/fornecedores': (context) => Fornecedores()
+      '/fornecedores': (context) => Fornecedores(),
+      '/esqueci': (context) => Esqueci()
 
     },
   ));

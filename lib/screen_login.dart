@@ -61,7 +61,7 @@ class _SignInOneState extends State<SignInOne> {
   }
 
   getSenha(){
-
+    Navigator.pushNamed(context, '/esqueci');
   }
 
   retorno() {
