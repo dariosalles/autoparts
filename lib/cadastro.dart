@@ -148,7 +148,7 @@ class _CadastroState extends State<Cadastro> {
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.only(top: 250),
+          margin: EdgeInsets.only(top: 200),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.white,

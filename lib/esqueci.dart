@@ -30,14 +30,14 @@ class _EsqueciState extends State<Esqueci> {
     );
   }
 
-  TextEditingController _controllerContatoEmail = TextEditingController();
+  TextEditingController _controllerEsqueciEmail = TextEditingController();
 
 
   sendEsqueci() async {
 
     String email;
 
-    email = _controllerContatoEmail.text.trim();
+    email = _controllerEsqueciEmail.text.trim();
 
     if(email.isEmpty) {
 
@@ -75,7 +75,7 @@ class _EsqueciState extends State<Esqueci> {
           mensagemToast("Verifique seu email com a senha");
 
 
-          _controllerContatoEmail.clear();
+          _controllerEsqueciEmail.clear();
 
 
 
@@ -101,85 +101,89 @@ class _EsqueciState extends State<Esqueci> {
         title: Text('Esqueci a senha'),
         backgroundColor: Color.fromARGB(255, 204, 37, 1),
       ),
-      drawer: MenuDrawer(),
-      body: LayoutBuilder(
-        builder:
-            (BuildContext context, BoxConstraints viewportConstraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints:
-              BoxConstraints(minHeight: viewportConstraints.maxHeight),
-              child: Column(children: [
-                Stack(
-                  children: <Widget>[
+      //drawer: MenuDrawer(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/img/fundo3.jpg'),
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter
+                )
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(20, 50, 20, 30),
+            child: Image.asset('assets/img/logo_autoparts.png'),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(top: 250),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(23),
+              child: ListView(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    child: Container(
+                      color: Color(0xfff5f5f5),
+                      child: TextFormField(
+                        controller: _controllerEsqueciEmail,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'SFUIDisplay'
+                        ),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email',
+                            prefixIcon: Icon(Icons.email),
+                            labelStyle: TextStyle(
+                                fontSize: 15
+                            )
+                        ),
+                      ),
 
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                            child: Text('Entre com seu email para recuperar a senha',
-                              style: TextStyle(
-                                  fontSize: 18,
+                    ),
+                  ),
 
-                                  fontStyle: FontStyle.italic
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: TextFormField(
-                              controller: _controllerContatoEmail,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'SFUIDisplay'
-                              ),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Email',
-                                  prefixIcon: Icon(Icons.email),
-                                  labelStyle: TextStyle(
-                                      fontSize: 15
-                                  )
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: MaterialButton(
 
-                              onPressed: () async {
-                                sendEsqueci();
-                                //Navigator.pushNamed(context, '/pecas');
-                              },//since this is only a UI app
-                              child: Text('Enviar',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'SFUIDisplay',
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              color: Color.fromARGB(255, 214, 37, 1),
-                              //color: Color(0xffff2d55),
-                              elevation: 0,
-                              minWidth: 400,
-                              height: 50,
-                              textColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
-                            ),
-                          )
-                        ],
+
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: MaterialButton(
+                      onPressed: (){
+                        sendEsqueci();
+                        //Navigator.pushNamed(context, '/pecas');
+                      },//since this is only a UI app
+                      child: Text('Recuperar Senha',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'SFUIDisplay',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      color: Color.fromARGB(255, 214, 37, 1),
+                      //color: Color(0xffff2d55),
+                      elevation: 0,
+                      minWidth: 400,
+                      height: 50,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
                       ),
                     ),
-                  ],
-                ),
-              ]),
+                  ),
+
+                ],
+              ),
             ),
-          );
-        },
+          )
+        ],
       ),
 
       ///bottomNavigationBar: BottomNav(),
