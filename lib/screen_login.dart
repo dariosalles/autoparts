@@ -37,79 +37,79 @@ class _SignInOneState extends State<SignInOne> {
 
   }
 
-  Future<Map> _getAcessoF() async {
-
-    String email;
-    String senha;
-    String nome;
-
-    email = _controllerEmail.text.trim();
-    senha = _controllerSenha.text.trim();
-    nome = 'Dario';
-
-    String apiAcesso = 'https://blockchain.info/ticker';
-
-    //String apiAcesso = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_usuario.php?token=$token';
-
-    http.Response response = await http.post(apiAcesso, body: {'email': email, 'senha': senha});
-
-    print(json.decode(response.body));
-
-    return json.decode(response.body); // converte String para <Map>
-
-    return retorno();
-  }
+//  Future<Map> _getAcessoF() async {
+//
+//    String email;
+//    String senha;
+//    String nome;
+//
+//    email = _controllerEmail.text.trim();
+//    senha = _controllerSenha.text.trim();
+//    nome = 'Dario';
+//
+//    String apiAcesso = 'https://blockchain.info/ticker';
+//
+//    //String apiAcesso = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_usuario.php?token=$token';
+//
+//    http.Response response = await http.post(apiAcesso, body: {'email': email, 'senha': senha});
+//
+//    print(json.decode(response.body));
+//
+//    return json.decode(response.body); // converte String para <Map>
+//
+//    return retorno();
+//  }
 
   getSenha(){
     Navigator.pushNamed(context, '/esqueci');
   }
 
-  retorno() {
-
-    FutureBuilder<Map>(
-      future: _getAcessoF(),
-      builder: (context, snapshot){
-
-        String resultado;
-        switch (snapshot.connectionState) {
-          case ConnectionState.none :
-            print('none');
-            break;
-          case ConnectionState.waiting :
-            print('waiting');
-            resultado = 'Carregando...';
-            break;
-          case ConnectionState.active :
-            print('active');
-            break;
-          case ConnectionState.done :
-            print('done');
-            if(snapshot.error) {
-              resultado = 'Erro ao carregar os dados';
-            } else {
-              //String email = snapshot.data['email'];
-              //String nome = snapshot.data['nome'];
-              double valor = snapshot.data["BRL"]["buy"];
-              resultado = valor.toString();
-            }
-            break;
-        }
-        return Center(
-          child: Text(resultado)
-        );
-      },
-    );
-  }
+//  retorno() {
+//
+//    FutureBuilder<Map>(
+//      future: _getAcessoF(),
+//      builder: (context, snapshot){
+//
+//        String resultado;
+//        switch (snapshot.connectionState) {
+//          case ConnectionState.none :
+//            print('none');
+//            break;
+//          case ConnectionState.waiting :
+//            print('waiting');
+//            resultado = 'Carregando...';
+//            break;
+//          case ConnectionState.active :
+//            print('active');
+//            break;
+//          case ConnectionState.done :
+//            print('done');
+//            if(snapshot.error) {
+//              resultado = 'Erro ao carregar os dados';
+//            } else {
+//              //String email = snapshot.data['email'];
+//              //String nome = snapshot.data['nome'];
+//              double valor = snapshot.data["BRL"]["buy"];
+//              resultado = valor.toString();
+//            }
+//            break;
+//        }
+//        return Center(
+//          child: Text(resultado)
+//        );
+//      },
+//    );
+//  }
 
   getAcesso() async {
 
     String email;
     String senha;
     String nome;
+    String id_usuario;
 
     email = _controllerEmail.text.trim();
     senha = _controllerSenha.text.trim();
-    nome = 'Dario';
 
     //print(email);
     //print(senha);
@@ -145,7 +145,7 @@ class _SignInOneState extends State<SignInOne> {
           _result = json.decode(response.body) as List;
         });
 
-        print('Resultado:' + _result.toString());
+        //print('Resultado:' + _result.toString());
 
         if(_result.isEmpty) {
 
@@ -156,20 +156,24 @@ class _SignInOneState extends State<SignInOne> {
         } else {
 
           setState(() {
-            nome = 'Dario';
+            email = _result[0]['email'];
+            nome = _result[0]['nome'];
+            id_usuario = _result[0]['id_usuario'].toString();
           });
 
           print('acesso permitido');
 
               //guarda email
               SharedPreferences sp = await SharedPreferences.getInstance();
+              sp.setString('nome', nome);
               sp.setString('email', email);
+              sp.setString('id_usuario', id_usuario);
 
-              setState(() {
-                email = sp.getString('email');
-              });
+//              setState(() {
+//                email = sp.getString('email');
+//              });
 
-              print('Email sp antes $email');
+              //print('Email sp antes $email');
 
 
               Navigator.pushNamed(context, '/pecas');

@@ -24,7 +24,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
 
     setState(() {
       email = sp.getString('email');
-      nome = '';
+      nome = sp.getString('nome');
     });
 
     //print('Email depois $email');
@@ -49,8 +49,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 214, 37, 1),
               ),
-              accountName: Text(nome ?? "Seu nome"),
-              accountEmail: Text(email ?? 'email'),
+              accountName: Text(nome ?? ''),
+              accountEmail: Text(email ?? ''),
               currentAccountPicture: CircleAvatar(
                 child: Text('AP',
                 style: TextStyle(

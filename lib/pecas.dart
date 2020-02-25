@@ -74,6 +74,8 @@ class _PecasState extends State<Pecas>  {
         //print(quant);
       });
 
+      //print(_items);
+
     } else {
 
       print("Erro no servidor - 500");
@@ -89,7 +91,7 @@ class _PecasState extends State<Pecas>  {
 
     String _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
 
-    print(_api);
+    //print(_api);
 
     http.Response response;
 
@@ -106,29 +108,36 @@ class _PecasState extends State<Pecas>  {
   }
 
   // ADICIONA PRODUTO NO CARRINHO
-  addCart() async {
+  addCart(idpeca, nome, valor) async {
+
+    //int idpeca;
+
+    // shared
+    SharedPreferences sp = await SharedPreferences.getInstance();
 
 
     // String apiAddCart
     String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=$_token';
 
-    print(apiAddCart);
+    //print(apiAddCart);
 
     http.Response response;
 
     // campos teste
-    String _idusuario = '12345678';
-    String _email = 'dariosalles@gmail.com';
-    String _peca = 'Pastilha de Freio';
-    String _idpeca = '4';
+    String _idusuario = sp.getString('id_usuario');
+    String _email = sp.getString('email'); //'dariosalles@gmail.com';
+    String _peca = nome;
+    String _idpeca = idpeca.toString();
     String _quant = '1';
-    String _valor = '15.77';
+    String _valor = valor;
 
     Map<dynamic, dynamic> _corpo = {'id_usuario': _idusuario, 'email': _email, 'id_peca': _idpeca, 'peca': _peca, 'quant': _quant, 'valor': _valor };
 
+    //print('Map Corpo $_corpo');
+
     response = await http.post(apiAddCart, body: _corpo);
 
-    print(response.body);
+    //print(response.body);
 
 
     if (response.statusCode == 200) {
@@ -148,7 +157,8 @@ class _PecasState extends State<Pecas>  {
 
       } else {
 
-       print('Produto adicionado com sucesso');
+       //print('Produto adicionado com sucesso');
+       mensagemToast('Produto adicionado com sucesso');
        // Navigator.pushNamed(context, '/carrinho');
 
       }
@@ -259,7 +269,7 @@ class _PecasState extends State<Pecas>  {
                                               child: Text("Sim"),
                                               onPressed: (){
                                                 print('sim');
-                                                addCart();
+                                                addCart(_items[indice]['id_peca'],_items[indice]['nome'],_items[indice]['valor']);
                                                 Navigator.pop(context);
                                               },
                                             ),
