@@ -5,11 +5,10 @@ import 'package:auto_parts/carrinho.dart';
 
 import 'package:auto_parts/screen_login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'esqueci.dart';
 import 'fornecedores.dart';
-
-
 
 void main() {
 
@@ -18,7 +17,7 @@ void main() {
     title: 'Auto Parts',
     initialRoute: "/",
     routes: {
-      '/': (context) => Inicial(),
+      '/': (context) => Splash(),
       '/pecas': (context) => Pecas(),
       '/contato': (context) => Contato(),
       '/carrinho': (context) => Carrinho(),
@@ -28,6 +27,39 @@ void main() {
 
     },
   ));
+}
+
+// SPLASH
+class Splash extends StatefulWidget {
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    Future.delayed(Duration(seconds: 4)).then((_){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Inicial()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+        color: Color.fromARGB(255, 214, 37, 1),
+        child: Center(
+          child: Container(
+            width: 150,
+            height: 150,
+            child: Image.asset("assets/img/icon.png"),
+          ),
+        )
+    );
+  }
 }
 
 // PAGE INICIAL
@@ -46,91 +78,91 @@ class Inicial extends StatelessWidget {
 
 
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-
-  //CONTROLLER - Email/Senha - RECUPERA O QUE FOI DIGITADO
-  TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerSenha = TextEditingController();
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/img/fundo.jpg"),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.srgbToLinearGamma(
-
-          )
-        ),
-      ),
-      padding: EdgeInsets.all(36),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Image.asset('assets/img/logo_autoparts.png'),
-
-          TextField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                labelText: "Digite seu email",
-                labelStyle: TextStyle(
-                    color: Colors.white
-                ),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    gapPadding: 4.00
-                )
-              //contentPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0)
-            ),
-            style: TextStyle(
-              fontSize: 25,
-              color: Colors.white,
-              //decorationColor: Colors.black
-            ),
-            controller: _controllerEmail,
-          ),
-          TextField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-                labelText: "Senha",
-                labelStyle: TextStyle(
-                  color: Colors.white
-                ),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    gapPadding: 4.00
-                )
-              //contentPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0)
-            ),
-            style: TextStyle(
-              fontSize: 25,
-              color: Colors.white,
-              //decorationColor: Colors.black
-            ),
-            controller: _controllerSenha,
-          ),
-          RaisedButton(
-            child: Text('Acessar'),
-            color: Color.fromARGB(255, 204, 51, 0),
-            textColor: Colors.white,
-            onPressed: (){
-              Navigator.pushNamed(context, '/pecas');
-              },
-          )
-
-        ],
-      ),
-
-    );
-  }
-}
+//class Home extends StatefulWidget {
+//  @override
+//  _HomeState createState() => _HomeState();
+//}
+//
+//class _HomeState extends State<Home> {
+//
+//  //CONTROLLER - Email/Senha - RECUPERA O QUE FOI DIGITADO
+//  TextEditingController _controllerEmail = TextEditingController();
+//  TextEditingController _controllerSenha = TextEditingController();
+//
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Container(
+//
+//      decoration: BoxDecoration(
+//        image: DecorationImage(
+//          image: AssetImage("assets/img/fundo.jpg"),
+//          fit: BoxFit.cover,
+//          colorFilter: ColorFilter.srgbToLinearGamma(
+//
+//          )
+//        ),
+//      ),
+//      padding: EdgeInsets.all(36),
+//      child: Column(
+//        mainAxisAlignment: MainAxisAlignment.spaceAround,
+//        children: <Widget>[
+//          Image.asset('assets/img/logo_autoparts.png'),
+//
+//          TextField(
+//            keyboardType: TextInputType.text,
+//            decoration: InputDecoration(
+//                labelText: "Digite seu email",
+//                labelStyle: TextStyle(
+//                    color: Colors.white
+//                ),
+//                border: OutlineInputBorder(
+//                    borderRadius: BorderRadius.all(Radius.circular(10)),
+//                    gapPadding: 4.00
+//                )
+//              //contentPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0)
+//            ),
+//            style: TextStyle(
+//              fontSize: 25,
+//              color: Colors.white,
+//              //decorationColor: Colors.black
+//            ),
+//            controller: _controllerEmail,
+//          ),
+//          TextField(
+//            keyboardType: TextInputType.text,
+//            decoration: InputDecoration(
+//                labelText: "Senha",
+//                labelStyle: TextStyle(
+//                  color: Colors.white
+//                ),
+//                border: OutlineInputBorder(
+//                    borderRadius: BorderRadius.all(Radius.circular(10)),
+//                    gapPadding: 4.00
+//                )
+//              //contentPadding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0)
+//            ),
+//            style: TextStyle(
+//              fontSize: 25,
+//              color: Colors.white,
+//              //decorationColor: Colors.black
+//            ),
+//            controller: _controllerSenha,
+//          ),
+//          RaisedButton(
+//            child: Text('Acessar'),
+//            color: Color.fromARGB(255, 204, 51, 0),
+//            textColor: Colors.white,
+//            onPressed: (){
+//              Navigator.pushNamed(context, '/pecas');
+//              },
+//          )
+//
+//        ],
+//      ),
+//
+//    );
+//  }
+//}
 
 
