@@ -14,6 +14,16 @@ class _SignInOneState extends State<SignInOne> {
   List _result = [];
   int token = 123456789;
 
+  bool _obscureText = true;
+
+  void _toggle() {
+
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+
+  }
+
 
   //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
   TextEditingController _controllerEmail = TextEditingController();
@@ -254,23 +264,36 @@ class _SignInOneState extends State<SignInOne> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     color: Color(0xfff5f5f5),
-                    child: TextFormField(
-                      controller: _controllerSenha,
-                      maxLength: 8,
-                      obscureText: true,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'SFUIDisplay'
-                      ),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Senha',
-                          prefixIcon: Icon(Icons.lock_outline),
-                          labelStyle: TextStyle(
-                              fontSize: 15
-                          )
-                      ),
-                    ),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          obscureText: _obscureText,
+                          controller: _controllerSenha,
+                          maxLength: 8,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'SFUIDisplay'
+                          ),
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Senha',
+                              prefixIcon: Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                onPressed: (){
+                                  _toggle();
+                                },
+                                icon: Icon(
+                                  _obscureText ? Icons.visibility_off : Icons.visibility,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              labelStyle: TextStyle(
+                                  fontSize: 15
+                              )
+                          ),
+                        ),
+                      ],
+                    )
                   ),
 
                   Padding(

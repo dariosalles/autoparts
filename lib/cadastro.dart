@@ -12,6 +12,16 @@ class _CadastroState extends State<Cadastro> {
   String _resultCad;
   int _token = 123456789;
 
+  bool _obscureText = true;
+
+  void _toggle() {
+
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+
+  }
+
   //CONTROLLER - CADASTRO - RECUPERA O QUE FOI DIGITADO
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
@@ -202,9 +212,10 @@ class _CadastroState extends State<Cadastro> {
                 Container(
                   color: Color(0xfff5f5f5),
                   child: TextFormField(
+
                     controller: _controllerSenha,
                     maxLength: 8,
-                    obscureText: true,
+                    obscureText: _obscureText,
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'SFUIDisplay'
@@ -213,6 +224,15 @@ class _CadastroState extends State<Cadastro> {
                         border: OutlineInputBorder(),
                         labelText: 'Senha',
                         prefixIcon: Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          onPressed: (){
+                            _toggle();
+                          },
+                          icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.black,
+                        ),
+                        ),
                         labelStyle: TextStyle(
                             fontSize: 15
                         )

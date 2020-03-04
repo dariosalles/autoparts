@@ -143,7 +143,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
                       tooltip: 'Sair',
                       onPressed: () {
                         print('Sair Logout');
-                        Navigator.pushNamed(context, '/');
+                        Navigator.pushNamed(context, '/inicial');
                       },
                     ),
                     Text("Sair (Logout)",
