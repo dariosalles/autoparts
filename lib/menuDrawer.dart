@@ -30,6 +30,26 @@ class _MenuDrawerState extends State<MenuDrawer> {
     //print('Email depois $email');
   }
 
+  _logout() async {
+
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    bool rememberMe = sp.getBool('lembrarme');
+    print('Logout $rememberMe');
+
+    if(rememberMe == true) {
+      setState(() {
+        sp.setBool('lembrarme', false);
+        rememberMe = false;
+      });
+    }
+    print('Logout $rememberMe');
+    print('Sair Logout');
+
+
+    Navigator.pushNamed(context, '/inicial');
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -141,9 +161,8 @@ class _MenuDrawerState extends State<MenuDrawer> {
                       color: Colors.red,
                       iconSize: 30,
                       tooltip: 'Sair',
-                      onPressed: () {
-                        print('Sair Logout');
-                        Navigator.pushNamed(context, '/inicial');
+                      onPressed: () async{
+                        _logout();
                       },
                     ),
                     Text("Sair (Logout)",

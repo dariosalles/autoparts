@@ -1,3 +1,4 @@
+import 'package:auto_parts/pecas.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,6 +12,28 @@ class SignInOne extends StatefulWidget {
 
 class _SignInOneState extends State<SignInOne> {
 
+  bool rememberMe = false;
+
+  initState() {
+
+    _verificarLembrarMe();
+
+
+  }
+
+  //VERIFICA SE JÁ EXISTE UM LOGIN
+  _verificarLembrarMe() async {
+
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    bool rememberMe = sp.getBool('lembrarme');
+    print(rememberMe);
+    if(rememberMe==true) {
+
+      Navigator.pushNamed(context, '/pecas');
+    }
+  }
+
+
   List _result = [];
   int token = 123456789;
 
@@ -23,6 +46,10 @@ class _SignInOneState extends State<SignInOne> {
     });
 
   }
+
+  void _onRememberMeChanged(bool newValue) => setState(() {
+    rememberMe = newValue;
+  });
 
 
   //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
@@ -165,10 +192,12 @@ class _SignInOneState extends State<SignInOne> {
 
         } else {
 
+
           setState(() {
             email = _result[0]['email'];
             nome = _result[0]['nome'];
             id_usuario = _result[0]['id_usuario'].toString();
+
           });
 
           print('acesso permitido');
@@ -178,6 +207,9 @@ class _SignInOneState extends State<SignInOne> {
               sp.setString('nome', nome);
               sp.setString('email', email);
               sp.setString('id_usuario', id_usuario);
+              if(rememberMe){
+                sp.setBool('lembrarme', rememberMe);
+              }
 
 //              setState(() {
 //                email = sp.getString('email');
@@ -185,8 +217,11 @@ class _SignInOneState extends State<SignInOne> {
 
               //print('Email sp antes $email');
 
+               //NAVEGA PRA PROXIMA PAGINA COM BOTAO VOLTAR
+              //Navigator.pushNamed(context, '/pecas');
 
-              Navigator.pushNamed(context, '/pecas');
+              // NAVEGA SEM DEIXAR BOTAO VOLTAR
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext) => Pecas()));
 
 
 
@@ -294,6 +329,12 @@ class _SignInOneState extends State<SignInOne> {
                         ),
                       ],
                     )
+                  ),
+                  CheckboxListTile(
+                    title: Text("Lembrar me?"),
+                    value: rememberMe,
+                    onChanged: _onRememberMeChanged,
+                    controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                   ),
 
                   Padding(
