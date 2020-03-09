@@ -151,11 +151,15 @@ class _FornecedoresState extends State<Fornecedores> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Image.asset('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString(),
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString()),
+                                      radius: 50,
                                     ),
+//                                    Image.asset('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString(),
+//                                      width: 100,
+//                                      height: 100,
+//                                      fit: BoxFit.cover,
+//                                    ),
                                     Column(
                                       children: <Widget>[
                                         Text(_itemsF[indice]['fornecedor'].toString()),
@@ -188,7 +192,7 @@ class _FornecedoresState extends State<Fornecedores> {
                                                     child: Text("Sim"),
                                                     onPressed: (){
                                                       print('sim');
-                                                      (){};
+
                                                       Navigator.pop(context);
                                                     },
                                                   ),

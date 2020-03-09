@@ -105,7 +105,7 @@ class _CarrinhoState extends State<Carrinho> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
-                Text("Resumo da sua compra",
+                Text("Resumo do seu pedido",
                   style: TextStyle(
                     fontSize: 25,
                   ),
@@ -130,15 +130,15 @@ class _CarrinhoState extends State<Carrinho> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Image.asset('assets/img/pecas/vela.jpg',// + _itemsC[indice]['imagem'].toString(),
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage('assets/img/pecas/'+_itemsC[indice]['imagem'].toString()),
+                                      radius: 50,
                                     ),
                                     Column(
                                       children: <Widget>[
                                         Text(_itemsC[indice]['peca'].toString()),
                                         Text(_itemsC[indice]['valor'].toString()),
+                                        Text('Quant: ' + _itemsC[indice]['quant'].toString()),
                                       ],
                                     ),
                                     IconButton(

@@ -133,7 +133,7 @@ class _PecasState extends State<Pecas>  {
 
     Map<dynamic, dynamic> _corpo = {'id_usuario': _idusuario, 'email': _email, 'id_peca': _idpeca, 'peca': _peca, 'quant': _quant, 'valor': _valor };
 
-    //print('Map Corpo $_corpo');
+    print('Map Corpo $_corpo');
 
     response = await http.post(apiAddCart, body: _corpo);
 
@@ -248,14 +248,20 @@ class _PecasState extends State<Pecas>  {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Image.asset('assets/img/pecas/' + _items[indice]['imagem'].toString(),
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
+                                  CircleAvatar(
+                                   backgroundImage: AssetImage('assets/img/pecas/' + _items[indice]['imagem'].toString(),
+                                    ),
+                                    radius: 50,
+
                                   ),
+
                                   Column(
                                     children: <Widget>[
-                                      Text(_items[indice]['nome'].toString()),
+                                      Text(_items[indice]['nome'].toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                      ),
                                       Text(_items[indice]['modelo'].toString()),
                                     ],
                                   ),
