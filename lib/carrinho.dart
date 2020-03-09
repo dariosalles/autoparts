@@ -91,8 +91,60 @@ class _CarrinhoState extends State<Carrinho> {
 
   }
 
+  //REMOVE A PEÇA DO CARRINHO
+  removeCart(idpeca) async {
+    // shared
+    SharedPreferences sp = await SharedPreferences.getInstance();
 
-  @override
+
+    // String apiAddCart
+    String apiremoveCart = 'http://www.dsxweb.com/apps/autoparts/api/apiRemove_carrinho.php?token=$_token';
+
+    print(apiremoveCart);
+
+    http.Response response;
+
+    // campos teste
+    String _idusuario = sp.getString('id_usuario');
+    String _email = sp.getString('email'); //'dariosalles@gmail.com';
+    String _idpeca = idpeca.toString();
+
+
+    Map<dynamic, dynamic> _corpo = {
+      'id_usuario': _idusuario,
+      'email': _email,
+      'id_peca': _idpeca
+    };
+
+    print('Map Corpo $_corpo');
+
+    response = await http.post(apiremoveCart, body: _corpo);
+
+    //print(response.body);
+
+
+    if (response.statusCode == 200) {
+      String _resultremoveCart = response.body;
+
+
+      print('Resultado: $_resultremoveCart');
+
+
+      if (_resultremoveCart.isEmpty) {
+        print('Erro ao excluir o produto. Tente novamente');
+        mensagemToast('Erro ao excluir o produto. Tente novamente');
+      } else {
+        //print('Produto adicionado com sucesso');
+        mensagemToast('Produto excluido com sucesso');
+        Navigator.pushNamed(context, '/carrinho');
+
+      }
+    } else {
+      print('Erro 500');
+    }
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -104,15 +156,16 @@ class _CarrinhoState extends State<Carrinho> {
         body: Container(
             padding: EdgeInsets.all(20),
             child: Column(
+              
               children: <Widget>[
-                Text("Resumo do seu pedido",
-                  style: TextStyle(
-                    fontSize: 25,
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Text("Resumo do seu pedido",
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
                   ),
                 ),
-
-
-
                 Expanded(
 
                   child: ListView.builder(
@@ -120,6 +173,7 @@ class _CarrinhoState extends State<Carrinho> {
                       itemBuilder: (context, indice){
 
                         return ListTile(
+
                             onTap: (){
 
                             },
@@ -128,23 +182,70 @@ class _CarrinhoState extends State<Carrinho> {
                               children: <Widget>[
 
                                 Row(
+                                  children: <Widget>[
+
+                                    Text(_itemsC[indice]['peca'].toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),)
+                                  ],
+                                ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     CircleAvatar(
                                       backgroundImage: AssetImage('assets/img/pecas/'+_itemsC[indice]['imagem'].toString()),
                                       radius: 50,
                                     ),
+//                                    Column(
+//                                      children: <Widget>[
+//                                        Text(_itemsC[indice]['peca'].toString()),
+//                                        Text(_itemsC[indice]['valor'].toString()),
+//                                        //Text('Quant: ' + _itemsC[indice]['quant'].toString()),
+//                                      ],
+//                                    ),
+//                                    Column(
+//                                      children: <Widget>[
+//                                        Text('x ' + _itemsC[indice]['quant'].toString(),
+//                                        style: TextStyle(
+//                                          fontWeight: FontWeight.bold
+//                                        ),
+//                                        ),
+//                                      ],
+//                                    ),
                                     Column(
                                       children: <Widget>[
-                                        Text(_itemsC[indice]['peca'].toString()),
-                                        Text(_itemsC[indice]['valor'].toString()),
-                                        Text('Quant: ' + _itemsC[indice]['quant'].toString()),
+
+                                        IconButton(
+                                          icon: Icon(Icons.add_circle),
+                                          color: Colors.green,
+                                          iconSize: 25,
+                                          tooltip: 'Excluir do Carrinho',
+                                          onPressed: () {
+                                           print('Clicado +');
+                                          },
+                                        ),
+                                        Text('x ' + _itemsC[indice]['quant'].toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.remove_circle),
+                                          color: Colors.red,
+                                          iconSize: 25,
+                                          tooltip: 'Excluir do Carrinho',
+                                          onPressed: () {
+                                            print('Clicado +');
+                                          },
+                                        ),
+
                                       ],
                                     ),
                                     IconButton(
-                                      icon: Icon(Icons.remove_circle),
+                                      icon: Icon(Icons.cancel),
                                       color: Colors.red,
-                                      iconSize: 40,
+                                      iconSize: 30,
                                       tooltip: 'Excluir do Carrinho',
                                       onPressed: () {
                                         showDialog(context: context,
@@ -167,7 +268,7 @@ class _CarrinhoState extends State<Carrinho> {
                                                     child: Text("Sim"),
                                                     onPressed: (){
                                                       print('sim');
-                                                      //removeCart(_itemsC[indice]['id_peca']);
+                                                      removeCart(_itemsC[indice]['id_peca']);
                                                       Navigator.pop(context);
                                                     },
                                                   ),
@@ -187,8 +288,21 @@ class _CarrinhoState extends State<Carrinho> {
 
                                   ],
                                 ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text('= RS ' +_itemsC[indice]['valor'])
+                                  ],
+                                ),
+                              Divider(
+                                color: Colors.black26,
+                                height: 20,
+                                thickness: 2,
+                              ),
+
                               ],
                             )
+
                         );
 
                       }),

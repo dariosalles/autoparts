@@ -244,7 +244,7 @@ class _PecasState extends State<Pecas>  {
                         },
                           title: Column(
                             children: <Widget>[
-                              //Text("titulo"),
+
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
@@ -254,7 +254,6 @@ class _PecasState extends State<Pecas>  {
                                     radius: 50,
 
                                   ),
-
                                   Column(
                                     children: <Widget>[
                                       Text(_items[indice]['nome'].toString(),
@@ -311,6 +310,12 @@ class _PecasState extends State<Pecas>  {
 
                                 ],
                               ),
+
+                              Divider(
+                                color: Colors.black12,
+                                height: 20,
+                                thickness: 2,
+                              )
                             ],
                           )
                       );
