@@ -232,7 +232,7 @@ class _CarrinhoState extends State<Carrinho> {
                                         ),
                                         IconButton(
                                           icon: Icon(Icons.remove_circle),
-                                          color: Colors.red,
+                                          color: Colors.lightBlue,
                                           iconSize: 25,
                                           tooltip: 'Excluir do Carrinho',
                                           onPressed: () {
@@ -243,7 +243,7 @@ class _CarrinhoState extends State<Carrinho> {
                                       ],
                                     ),
                                     IconButton(
-                                      icon: Icon(Icons.cancel),
+                                      icon: Icon(Icons.delete),
                                       color: Colors.red,
                                       iconSize: 30,
                                       tooltip: 'Excluir do Carrinho',
