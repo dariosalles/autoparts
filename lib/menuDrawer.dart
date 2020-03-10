@@ -78,12 +78,15 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 ],
               ),
               currentAccountPicture: CircleAvatar(
+                //backgroundImage: AssetImage('assets/img/fundoavatar.jpeg'),
                 child: Text('AP',
                 style: TextStyle(
+                  color: Color.fromARGB(255, 214, 37, 1),
                   fontSize: 40,
                   fontWeight: FontWeight.bold
 
-                ),),
+                ),
+                ),
                 backgroundColor: Colors.white,
 
               ),

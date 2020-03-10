@@ -410,12 +410,36 @@ class _CarrinhoState extends State<Carrinho> {
                               ),
 
                               ],
-                            )
+                            ),
 
                         );
 
                       }),
-                )
+
+                ),
+                MaterialButton(
+                  height: 50,
+                    minWidth: 400,
+                  onPressed: (){
+                    //getAcesso();
+                    Navigator.pushNamed(context, '/finaliza');
+                  },//since this is only a UI app
+                  child: Text('Finalizar Pagamento',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'SFUIDisplay',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  color: Color.fromARGB(255, 204, 37, 1),
+                  //color: Color(0xffff2d55),
+                  elevation: 0,
+
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)
+                  ),
+                ),
               ],
             )
         ),
