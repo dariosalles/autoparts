@@ -70,7 +70,13 @@ class _MenuDrawerState extends State<MenuDrawer> {
                 color: Color.fromARGB(255, 214, 37, 1),
               ),
               accountName: Text(nome ?? ''),
-              accountEmail: Text(email ?? ''),
+              accountEmail: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(email ?? ''),
+
+                ],
+              ),
               currentAccountPicture: CircleAvatar(
                 child: Text('AP',
                 style: TextStyle(
@@ -90,6 +96,43 @@ class _MenuDrawerState extends State<MenuDrawer> {
             title: Column(
 
               children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.person),
+                      color: Colors.red,
+                      iconSize: 30,
+                      tooltip: 'Perfil',
+                      onPressed: () {
+                        print('Recarrega a pagina Perfil');
+                        Navigator.pushNamed(context, '/perfil');
+                      },
+                    ),
+                    Text("Perfil",
+                        style: optionStyle)
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.alternate_email),
+                      color: Colors.red,
+                      iconSize: 30,
+                      tooltip: 'Contato',
+                      onPressed: () {
+                        print('Recarrega a pagina Contato');
+                        Navigator.pushNamed(context, '/contato');
+                      },
+                    ),
+                    Text("Contato",
+                        style: optionStyle),
+                  ],
+                ),
+                Divider(
+                  color: Colors.black12,
+                  height: 20,
+                  thickness: 1,
+                ),
                 Row(
                   children: <Widget>[
                     IconButton(
@@ -138,22 +181,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         style: optionStyle),
                   ],
                 ),
-                Row(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.alternate_email),
-                      color: Colors.red,
-                      iconSize: 30,
-                      tooltip: 'Contato',
-                      onPressed: () {
-                        print('Recarrega a pagina Contato');
-                        Navigator.pushNamed(context, '/contato');
-                      },
-                    ),
-                    Text("Contato",
-                        style: optionStyle),
-                  ],
+                Divider(
+                  color: Colors.black12,
+                  height: 20,
+                  thickness: 1,
                 ),
+
                 Row(
                   children: <Widget>[
                     IconButton(

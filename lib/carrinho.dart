@@ -15,6 +15,13 @@ class _CarrinhoState extends State<Carrinho> {
 
   String email;
 
+  //TOKEN
+  int _token = 123456789;
+
+  List _itemsC = [];
+  int _quantC = 0;
+  String _apiC;
+
 
   initState() {
 
@@ -22,8 +29,6 @@ class _CarrinhoState extends State<Carrinho> {
 
 
   }
-
-
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -42,13 +47,6 @@ class _CarrinhoState extends State<Carrinho> {
 
   }
 
-  //TOKEN
-  int _token = 123456789;
-
-  List _itemsC = [];
-  int _quantC = 0;
-  String _apiC;
-
   // CARREGA AS PEÇAS INICIAIS
   _inicialCarrinho() async {
 
@@ -57,18 +55,18 @@ class _CarrinhoState extends State<Carrinho> {
 
     email = sp.getString('email');
 
-    print(email);
+    //print(email);
 
     _apiC = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_carrinho.php?token=$_token';
 
-    print(_apiC);
+    //print(_apiC);
 
     http.Response response;
 
     response = await http.post(_apiC, body: {'email': email});
     //response = await http.get(_apiC);
 
-    print(response.body);
+    //print(response.body);
 
     if(response.statusCode==200) {
 
@@ -88,6 +86,98 @@ class _CarrinhoState extends State<Carrinho> {
 
       print("Erro no servidor - 500");
     }
+
+  }
+
+  // AUMENTA QUANTIDADE DO PRODUTO
+  aumentaQtde(idcarrinho,valor) async {
+
+    // String apiAddCart
+    String apiaumentaQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiAumenta_qtde.php?token=$_token';
+
+    String _idcarrinho = idcarrinho.toString();
+    String _valor = valor.toString();
+
+    http.Response response;
+
+    Map<dynamic, dynamic> _corpo = {
+      'id_carrinho': _idcarrinho,
+      'valor': _valor
+    };
+
+
+    response = await http.post(apiaumentaQtde, body: _corpo);
+
+    print(response.body);
+
+
+    if (response.statusCode == 200) {
+      String _resultaumentaQtde = response.body;
+
+
+      print('Resultado: $_resultaumentaQtde');
+
+
+      if (_resultaumentaQtde.isEmpty) {
+        print('Erro ao aumentar a quantidade do produto. Tente novamente');
+        mensagemToast('Erro ao aumentar a quantidade do produto. Tente novamente');
+      } else {
+        print('Quantidade aumentada com sucesso');
+        mensagemToast('Quantidade aumentada com sucesso');
+        Navigator.pushNamed(context, '/carrinho');
+
+      }
+    } else {
+      print('Erro 500');
+    }
+
+
+
+  }
+
+  // DIMINUI QUANTIDADE DO PRODUTO
+  diminuiQtde(idcarrinho,valor) async {
+
+    // String apiAddCart
+    String apidiminuiQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiDiminui_qtde.php?token=$_token';
+
+    String _idcarrinho = idcarrinho.toString();
+    String _valor = valor.toString();
+
+    http.Response response;
+
+    Map<dynamic, dynamic> _corpo = {
+      'id_carrinho': _idcarrinho,
+      'valor': _valor
+    };
+
+
+    response = await http.post(apidiminuiQtde, body: _corpo);
+
+    print(response.body);
+
+
+    if (response.statusCode == 200) {
+      String _resultdiminuiQtde = response.body;
+
+
+      print('Resultado: $_resultdiminuiQtde');
+
+
+      if (_resultdiminuiQtde.isEmpty) {
+        print('Erro ao diminuir a quantidade do produto. Tente novamente');
+        mensagemToast('Erro ao diminuir a quantidade do produto. Tente novamente');
+      } else {
+        print('Quantidade diminuida com sucesso');
+        mensagemToast('Quantidade diminuida com sucesso');
+        Navigator.pushNamed(context, '/carrinho');
+
+      }
+    } else {
+      print('Erro 500');
+    }
+
+
 
   }
 
@@ -223,8 +313,18 @@ class _CarrinhoState extends State<Carrinho> {
                                           tooltip: 'Excluir do Carrinho',
                                           onPressed: () {
                                            print('Clicado +');
+
+                                           double valorp;
+                                           double quantp;
+                                           valorp = double.parse(_itemsC[indice]['valor']);
+                                           quantp = double.parse(_itemsC[indice]['quant']);
+                                           double valorpeca = valorp / quantp;
+                                           print(valorpeca);
+
+                                           aumentaQtde(_itemsC[indice]['id_carrinho'].toString(),valorpeca);
                                           },
                                         ),
+
                                         Text('x ' + _itemsC[indice]['quant'].toString(),
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold
@@ -236,7 +336,16 @@ class _CarrinhoState extends State<Carrinho> {
                                           iconSize: 25,
                                           tooltip: 'Excluir do Carrinho',
                                           onPressed: () {
-                                            print('Clicado +');
+                                            print('Clicado -');
+
+                                            double valorp;
+                                            double quantp;
+                                            valorp = double.parse(_itemsC[indice]['valor']);
+                                            quantp = double.parse(_itemsC[indice]['quant']);
+                                            double valorpeca = valorp / quantp;
+                                            print(valorpeca);
+
+                                            diminuiQtde(_itemsC[indice]['id_carrinho'].toString(),valorpeca);
                                           },
                                         ),
 

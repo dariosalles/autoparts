@@ -2,6 +2,7 @@ import 'package:auto_parts/cadastro.dart';
 import 'package:auto_parts/pecas.dart';
 import 'package:auto_parts/contato.dart';
 import 'package:auto_parts/carrinho.dart';
+import 'package:auto_parts/perfil.dart';
 
 import 'package:auto_parts/screen_login.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ void main() {
     routes: {
       '/': (context) => Splash(),
       '/inicial': (context) => Inicial(),
+      '/perfil': (context) => Perfil(),
       '/pecas': (context) => Pecas(),
       '/contato': (context) => Contato(),
       '/carrinho': (context) => Carrinho(),
