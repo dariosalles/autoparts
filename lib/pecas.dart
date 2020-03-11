@@ -280,11 +280,18 @@ class _PecasState extends State<Pecas>  {
                                       ),
                                       ),
                                       Text(_items[indice]['modelo'].toString()),
+                                      Text('R\$ ' + _items[indice]['valor'].toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.add_circle),
-                                    color: Colors.red,
+                                    color: Colors.green,
                                     iconSize: 40,
                                     tooltip: 'Adicionar ao Carrinho',
                                     onPressed: () {
