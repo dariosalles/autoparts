@@ -5,6 +5,7 @@ import 'package:auto_parts/menuDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class Carrinho extends StatefulWidget {
   @override
@@ -80,12 +81,30 @@ class _CarrinhoState extends State<Carrinho> {
         //print(quant);
       });
 
-      //print(_items);
+
 
     } else {
 
       print("Erro no servidor - 500");
     }
+
+  }
+  // GET TOTAL
+  getTotal() {
+
+    NumberFormat formatter = NumberFormat("00.00");
+    //double initialValue = num.parse(0.18941.toStringAsPrecision(2));
+    //double value = 0.19;
+
+    //print(formatter.format(initialValue));
+    //print(formatter.format(value));
+
+    double total = 0;
+    for(int i=0;i<_itemsC.length;i++) {
+      total += double.parse(_itemsC[i]['valor']);
+     //print('Total ' + total.toString());
+    }
+    return formatter.format(total);
 
   }
 
@@ -400,7 +419,7 @@ class _CarrinhoState extends State<Carrinho> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    Text('= RS ' +_itemsC[indice]['valor'])
+                                    Text('= R\$ ' + _itemsC[indice]['valor'])
                                   ],
                                 ),
                               Divider(
@@ -416,6 +435,36 @@ class _CarrinhoState extends State<Carrinho> {
 
                       }),
 
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10, top: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Text("Total:  ",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                            ),
+                          ),
+                          Text("R\$ " + getTotal().toString(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25
+                          ),
+                          ),
+                        ],
+                      ),
+
+
+                    ),
+
+                  ],
                 ),
                 MaterialButton(
                   height: 50,

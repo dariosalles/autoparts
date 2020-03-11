@@ -1,4 +1,5 @@
 import 'package:auto_parts/cadastro.dart';
+import 'package:auto_parts/detalhes_pecas.dart';
 import 'package:auto_parts/pecas.dart';
 import 'package:auto_parts/contato.dart';
 import 'package:auto_parts/carrinho.dart';
@@ -22,6 +23,7 @@ void main() {
       '/inicial': (context) => Inicial(),
       '/perfil': (context) => Perfil(),
       '/pecas': (context) => Pecas(),
+      '/detalhes': (context) => Detalhes(),
       '/contato': (context) => Contato(),
       '/carrinho': (context) => Carrinho(),
       '/cadastro': (context) => Cadastro(),

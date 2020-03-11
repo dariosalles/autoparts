@@ -11,19 +11,25 @@ class Pecas extends StatefulWidget {
   _PecasState createState() => _PecasState();
 }
 
-
-
 class _PecasState extends State<Pecas>  {
 
   String email;
+
+  //TOKEN
+  int _token = 123456789;
+
+  //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
+  TextEditingController _controllerBusca = TextEditingController();
+
+  List _items = [];
+  int _quant = 0;
+  String _api;
 
   initState() {
 
     _inicialPecas();
 
-
   }
-
 
 
   // MENSAGENS AMIGAVEIS
@@ -43,15 +49,7 @@ class _PecasState extends State<Pecas>  {
 
   }
 
-  //TOKEN
-  int _token = 123456789;
 
-  //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
-  TextEditingController _controllerBusca = TextEditingController();
-
-  List _items = [];
-  int _quant = 0;
-  String _api;
 
   // CARREGA AS PEÇAS INICIAIS
   _inicialPecas() async {
@@ -180,6 +178,18 @@ class _PecasState extends State<Pecas>  {
     Navigator.pushNamed(context, '/carrinho');
   }
 
+  goDetalhes(idpeca) async{
+
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString('idpeca', idpeca);
+
+    idpeca = sp.getString('idpeca');
+
+    print('ID PECA: $idpeca');
+
+    Navigator.pushNamed(context, '/detalhes');
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -240,11 +250,19 @@ class _PecasState extends State<Pecas>  {
 
                       return ListTile(
                         onTap: (){
-
+                            goDetalhes(_items[indice]['id_peca'].toString());
                         },
                           title: Column(
                             children: <Widget>[
+                              Row(
+                                children: <Widget>[
 
+                                  Text(_items[indice]['nome'].toString(),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold
+                                    ),)
+                                ],
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
@@ -256,7 +274,7 @@ class _PecasState extends State<Pecas>  {
                                   ),
                                   Column(
                                     children: <Widget>[
-                                      Text(_items[indice]['nome'].toString(),
+                                      Text(_items[indice]['marca'].toString(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold
                                       ),
