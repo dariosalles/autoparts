@@ -1,4 +1,5 @@
 import 'package:auto_parts/cadastro.dart';
+import 'package:auto_parts/detalhes_fornecedores.dart';
 import 'package:auto_parts/detalhes_pecas.dart';
 import 'package:auto_parts/pecas.dart';
 import 'package:auto_parts/contato.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/services.dart';
 
 import 'esqueci.dart';
 import 'fornecedores.dart';
+import 'fornecedores_mapa.dart';
 
 void main() {
 
@@ -24,6 +26,8 @@ void main() {
       '/perfil': (context) => Perfil(),
       '/pecas': (context) => Pecas(),
       '/detalhes': (context) => Detalhes(),
+      '/detalhesfornecedor': (context) => DetalhesFornecedores(),
+      '/fornecedormapa': (context) => FornecedorMapa(),
       '/contato': (context) => Contato(),
       '/carrinho': (context) => Carrinho(),
       '/cadastro': (context) => Cadastro(),

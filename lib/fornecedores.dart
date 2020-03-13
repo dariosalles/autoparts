@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'menuDrawer.dart';
 
 class Fornecedores extends StatefulWidget {
@@ -97,6 +98,18 @@ class _FornecedoresState extends State<Fornecedores> {
 
   }
 
+  goDetalhesFornecedores(idfornecedor) async{
+
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setString('idfornecedor', idfornecedor);
+
+    idfornecedor = sp.getString('idfornecedor');
+
+    print('ID FORNECEDOR: $idfornecedor');
+
+    Navigator.pushNamed(context, '/detalhesfornecedor');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +156,7 @@ class _FornecedoresState extends State<Fornecedores> {
 
                         return ListTile(
                             onTap: (){
+                              goDetalhesFornecedores(_itemsF[indice]['id_fornecedor'].toString());
 
                             },
                             title: Column(
@@ -163,53 +177,9 @@ class _FornecedoresState extends State<Fornecedores> {
                                     Column(
                                       children: <Widget>[
                                         Text(_itemsF[indice]['fornecedor'].toString()),
-                                        Text(_itemsF[indice]['descricao'].toString()),
+                                        //Text(_itemsF[indice]['descricao'].toString()),
                                       ],
                                     ),
-                                    IconButton(
-                                      icon: Icon(Icons.arrow_forward_ios),
-                                      color: Colors.red,
-                                      iconSize: 40,
-                                      tooltip: 'Adicionar ao Carrinho',
-                                      onPressed: () {
-                                        showDialog(context: context,
-                                            builder: (context){
-                                              return AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                                                ),
-                                                title: Text('Deseja adicionar ao carrinho'),
-                                                titlePadding: EdgeInsets.all(20),
-                                                titleTextStyle: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.red
-                                                ),
-                                                content: Text(_itemsF[indice]['nome'].toString(),
-                                                    textAlign: TextAlign.center),
-                                                contentPadding: EdgeInsets.all(20),
-                                                actions: <Widget>[
-                                                  RaisedButton(
-                                                    child: Text("Sim"),
-                                                    onPressed: (){
-                                                      print('sim');
-
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  RaisedButton(
-                                                    child: Text('Não'),
-                                                    onPressed: (){
-                                                      Navigator.pop(context);
-                                                    },
-                                                  )
-                                                ],
-
-                                              );
-                                            });
-                                        //print('Clicado $indice');
-                                      },
-                                    ),
-
                                   ],
                                 ),
                               ],
