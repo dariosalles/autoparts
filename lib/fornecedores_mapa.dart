@@ -18,6 +18,15 @@ class FornecedorMapa extends StatefulWidget {
 }
 
 class _FornecedorMapaState extends State<FornecedorMapa> {
+
+
+//  initState() {
+//
+//    inicialMapa();
+//  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,29 +46,79 @@ class Mapa extends StatefulWidget {
 }
 
 class MapaState extends State<Mapa> {
+
+  double latitude;
+  double longitude;
+
+  BitmapDescriptor pinLocationIcon;
+  Set<Marker> _markers = {};
   Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(-23.02960270,-45.56365550),
-    zoom: 14.4746,
-  );
 
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(-23.02960270,-45.56365550),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  @override
+  void initState() {
+    super.initState();
+    inicialMapa();
+    setCustomMapPin();
+  }
+
+  inicialMapa() async {
+
+    SharedPreferences sp = await SharedPreferences.getInstance();
+
+    setState(() {
+      latitude = sp.getDouble('latitude');
+      longitude = sp.getDouble('longitude');
+    });
+
+  }
+
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/img/pin.png');
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    LatLng pinPosition = LatLng(latitude, longitude);
+    //LatLng pinPosition = LatLng(-23.02969750,-45.56220480);
+
+    // these are the minimum required values to set
+    // the camera position
+    CameraPosition initialLocation = CameraPosition(
+        zoom: 16,
+        bearing: 30,
+        target: pinPosition
+    );
+
     return new Scaffold(
       body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
+        myLocationEnabled: true,
+        markers: _markers,
+        initialCameraPosition: initialLocation,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-        },
-      ),
+          setState(() {
+            _markers.add(
+                Marker(
+                    markerId: MarkerId('<MARKER_ID>'),
+                    position: pinPosition,
+                    icon: pinLocationIcon
+                )
+            );
+          });
+        }),
+//      GoogleMap(
+//
+//        mapType: MapType.normal,
+//        markers: _markers,
+//        initialCameraPosition: _kGooglePlex,
+//        onMapCreated: (GoogleMapController controller) {
+//          _controller.complete(controller);
+//        },
+//      ),
 //      floatingActionButton: FloatingActionButton.extended(
 //
 //        onPressed: (){},

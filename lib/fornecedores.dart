@@ -165,10 +165,12 @@ class _FornecedoresState extends State<Fornecedores> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString()),
-                                      radius: 50,
+                                    Image.asset('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString(),
+                                      width: 100,
+                                      height: 100
                                     ),
+
+
 //                                    Image.asset('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString(),
 //                                      width: 100,
 //                                      height: 100,

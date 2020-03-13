@@ -26,8 +26,8 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
   String cidade;
   String estado;
   int cep;
-  String latitude;
-  String longitude;
+  double latitude;
+  double longitude;
   int telefone;
   String descricao;
   String imagem;
@@ -66,9 +66,6 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
 
     inicialDetalhesF(idforndetalhes);
   }
-
-
-
 
   // CARREGA OS DADOS - DETALHES DO FORNECEDOR
   inicialDetalhesF(id) async {
@@ -111,7 +108,12 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
   }
 //
 
-  goMapa(latitude,longitude) {
+  goMapa(double latitude, double longitude) async {
+
+    //guarda email
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setDouble('latitude', latitude);
+    sp.setDouble('longitude', longitude);
 
     Navigator.pushNamed(context, '/fornecedormapa');
   }
@@ -235,12 +237,24 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
             SizedBox(
               width: 25,
             ),
+            IconButton(
+              icon: Icon(Icons.pin_drop),
+              iconSize: 40,
+              color: Colors.red,
+              tooltip: 'Localização',
+              onPressed: () {
+
+              },
+            ),
             RaisedButton(
               onPressed: (){
-                goMapa(_itemsDF[0]['latitude'].toString(),_itemsDF[0]['longitude'].toString());
+                goMapa(latitude,longitude);
               },
-              child: Text('Localização no mapa'),
+              hoverColor: Colors.red,
+              color: Colors.white,
+              child: Text('Localização'),
             )
+
           ],
         ),
         SizedBox(

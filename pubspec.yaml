@@ -74,6 +74,7 @@ flutter:
   - assets/img/fornecedores/logo_agaesse.png
   - assets/img/icon.png
   - assets/img/fundoavatar.jpeg
+  - assets/img/pin.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
