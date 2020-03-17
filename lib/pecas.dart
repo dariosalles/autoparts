@@ -187,9 +187,9 @@ class _PecasState extends State<Pecas>  {
 
       } else {
 
-       //print('Produto adicionado com sucesso');
-       mensagemToast('Produto adicionado com sucesso');
-       // Navigator.pushNamed(context, '/carrinho');
+        //print('Produto adicionado com sucesso');
+        mensagemToast('Produto adicionado com sucesso');
+        // Navigator.pushNamed(context, '/carrinho');
 
       }
 
@@ -226,10 +226,10 @@ class _PecasState extends State<Pecas>  {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
 
-        title: Text('Peças'),
-        backgroundColor: Color.fromARGB(255, 204, 37, 1),
+          title: Text('Peças'),
+          backgroundColor: Color.fromARGB(255, 204, 37, 1),
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -243,230 +243,230 @@ class _PecasState extends State<Pecas>  {
               },
             ),
           ],
-      ),
-      drawer: MenuDrawer(),
-      body: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Container(
-                    width: 250,
-                    child:
-                    TextField(
-                    cursorWidth: 2,
-                    keyboardType: TextInputType.text,
-                    maxLength: 30,
-                    decoration: InputDecoration(
-                        labelText: "Buscar peça",
+        ),
+        drawer: MenuDrawer(),
+        body: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 250,
+                      child:
+                      TextField(
+                        cursorWidth: 2,
+                        keyboardType: TextInputType.text,
+                        maxLength: 30,
+                        decoration: InputDecoration(
+                            labelText: "Buscar peça",
 
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            gapPadding: 4.00
-                        )
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                gapPadding: 4.00
+                            )
+                        ),
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
+                        controller: _controllerBusca,
+                      ),
                     ),
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.black,
-                    ),
-                    controller: _controllerBusca,
-                  ),
-                  ),
-                  SizedBox(width: 15,),
-                  Container(
-                    width: 100,
-                    child:
-                    RaisedButton(
-                      child: Text('Buscar'),
-                      color: Colors.red,
-                      textColor: Colors.white,
-                      onPressed: (){
-                        //_buscaPecas();
-                        _recuperarPecas();
-                      },
-                    ),
-                  )
+                    SizedBox(width: 15,),
+                    Container(
+                      width: 100,
+                      child:
+                      RaisedButton(
+                        child: Text('Buscar'),
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        onPressed: (){
+                          //_buscaPecas();
+                          _recuperarPecas();
+                        },
+                      ),
+                    )
 
-                ],
-              ),
-              Expanded(
-                child: FutureBuilder(
-                  future: _recuperarPecas(),
-                  builder: (context, snapshot){
+                  ],
+                ),
+                Expanded(
+                  child: FutureBuilder(
+                    future: _recuperarPecas(),
+                    builder: (context, snapshot){
 
-                    String resultado;
-                    bool _loading = false;
+                      String resultado;
+                      bool _loading = false;
 
-                    switch(snapshot.connectionState) {
-                      case ConnectionState.done :
-                      //print('conexao none');
-                        if (snapshot.hasError){
+                      switch(snapshot.connectionState) {
+                        case ConnectionState.done :
+                        //print('conexao none');
+                          if (snapshot.hasError){
 
-                          resultado = "Erro ao carregar os dados";
-                          //print(snapshot.hasError);
-                          print(snapshot.error);
+                            resultado = "Erro ao carregar os dados";
+                            //print(snapshot.hasError);
+                            print(snapshot.error);
 
-                        } else {
+                          } else {
 
-                          return ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, indice) {
+                            return ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, indice) {
 
-                              return ListTile(
-                                onTap: () {
-                                  goDetalhes(snapshot.data[indice]['id_peca']
-                                      .toString());
-                                },
-                                title: Column(
-                                  children: <Widget>[
-                                    Row(
+                                  return ListTile(
+                                    onTap: () {
+                                      goDetalhes(snapshot.data[indice]['id_peca']
+                                          .toString());
+                                    },
+                                    title: Column(
                                       children: <Widget>[
-                                        Text(snapshot.data[indice]['nome'].toString(),
-                                          style: TextStyle(
-                                          fontWeight: FontWeight.bold
-                                          ),
+                                        Row(
+                                          children: <Widget>[
+                                            Text(snapshot.data[indice]['nome'].toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                    ],
-                                    ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      CircleAvatar(
-                                        backgroundImage: AssetImage('assets/img/pecas/' + snapshot.data[indice]['imagem'].toString(),
-                                      ),
-                                    radius: 50,
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            CircleAvatar(
+                                              backgroundImage: AssetImage('assets/img/pecas/' + snapshot.data[indice]['imagem'].toString(),
+                                              ),
+                                              radius: 50,
 
-                                  ),
-                                    Column(
-                                      children: <Widget>[
-                                        Text(snapshot.data[indice]['marca'].toString(),
-                                          style: TextStyle(
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                      ),
-                                      Text(snapshot.data[indice]['modelo'].toString()),
-                                      Text('R\$ ' + snapshot.data[indice]['valor'].toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 20
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.add_circle),
-                                    color: Colors.green,
-                                    iconSize: 40,
-                                    tooltip: 'Adicionar ao Carrinho',
-                                    onPressed: () {
-                                      showDialog(context: context,
-                                      builder: (context){
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(Radius.circular(20.0))
-                                          ),
-                                          title: Text('Deseja adicionar ao carrinho'),
-                                          titlePadding: EdgeInsets.all(20),
-                                          titleTextStyle: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.red
-                                          ),
-                                          content: Text(_items[indice]['nome'].toString(),
-                                          textAlign: TextAlign.center),
-                                          contentPadding: EdgeInsets.all(20),
-                                          actions: <Widget>[
-                                            RaisedButton(
-                                              child: Text("Sim"),
-                                              onPressed: (){
-                                                print('sim');
-                                                addCart(_items[indice]['id_peca'],_items[indice]['nome'],_items[indice]['valor']);
-                                                Navigator.pop(context);
+                                            ),
+                                            Column(
+                                              children: <Widget>[
+                                                Text(snapshot.data[indice]['marca'].toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold
+                                                  ),
+                                                ),
+                                                Text(snapshot.data[indice]['modelo'].toString()),
+                                                Text('R\$ ' + snapshot.data[indice]['valor'].toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black,
+                                                      fontSize: 20
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.add_circle),
+                                              color: Colors.green,
+                                              iconSize: 40,
+                                              tooltip: 'Adicionar ao Carrinho',
+                                              onPressed: () {
+                                                showDialog(context: context,
+                                                    builder: (context){
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.all(Radius.circular(20.0))
+                                                        ),
+                                                        title: Text('Deseja adicionar ao carrinho'),
+                                                        titlePadding: EdgeInsets.all(20),
+                                                        titleTextStyle: TextStyle(
+                                                            fontSize: 20,
+                                                            color: Colors.red
+                                                        ),
+                                                        content: Text(_items[indice]['nome'].toString(),
+                                                            textAlign: TextAlign.center),
+                                                        contentPadding: EdgeInsets.all(20),
+                                                        actions: <Widget>[
+                                                          RaisedButton(
+                                                            child: Text("Sim"),
+                                                            onPressed: (){
+                                                              print('sim');
+                                                              addCart(_items[indice]['id_peca'],_items[indice]['nome'],_items[indice]['valor']);
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          RaisedButton(
+                                                            child: Text('Não'),
+                                                            onPressed: (){
+                                                              Navigator.pop(context);
+                                                            },
+                                                          )
+                                                        ],
+
+                                                      );
+                                                    });
+                                                //print('Clicado $indice');
                                               },
                                             ),
-                                            RaisedButton(
-                                              child: Text('Não'),
-                                              onPressed: (){
-                                                Navigator.pop(context);
-                                              },
-                                            )
+
                                           ],
+                                        ),
 
-                                        );
-                                      });
-                                      //print('Clicado $indice');
-                                    },
-                                  ),
+                                        Divider(
+                                          color: Colors.black12,
+                                          height: 20,
+                                          thickness: 2,
+                                        )
 
-                                ],
-                              ),
+                                      ],
+                                    ),
 
-                                  Divider(
-                                  color: Colors.black12,
-                                  height: 20,
-                                  thickness: 2,
-                                )
+                                  );
+                                });
 
-                                  ],
-                                ),
+                          }
+                          break;
+                        case ConnectionState.waiting :
 
-                              );
-                            });
-
-                        }
-                        break;
-                      case ConnectionState.waiting :
-
-                      //runLoading();
+                        //runLoading();
 
                         //_loading ?
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                              //backgroundColor: Colors.red,
-                              strokeWidth: 5,
-                            ),
-                            SizedBox(height: 10,),
-                            Text('Carregando Peças...',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
-                            ),)
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                                //backgroundColor: Colors.red,
+                                strokeWidth: 5,
+                              ),
+                              SizedBox(height: 10,),
+                              Text('Carregando Peças...',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20
+                                ),)
                             ],
                           );
 
 
                           //  : SizedBox(width: 0, height: 0,);
 
-                        //resultado = 'Carregando...';
+                          //resultado = 'Carregando...';
 
-                        break;
+                          break;
 
-                      case ConnectionState.active :
-                      //print('conexao active');
-                        break;
-                      case ConnectionState.none :
-                      //print('conexao none');
-                        break;
-                    }
-                    return Center(
-                      child: Text(resultado,
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold
-                      ),),
-                    );
-                  },
-                ),
-              )
-            ],
-          )
+                        case ConnectionState.active :
+                        //print('conexao active');
+                          break;
+                        case ConnectionState.none :
+                        //print('conexao none');
+                          break;
+                      }
+                      return Center(
+                        child: Text(resultado,
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),),
+                      );
+                    },
+                  ),
+                )
+              ],
+            )
         ));
-      //bottomNavigationBar: BottomNav());
+    //bottomNavigationBar: BottomNav());
   }
 }
