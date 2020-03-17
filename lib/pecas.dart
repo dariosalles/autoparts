@@ -25,13 +25,6 @@ class _PecasState extends State<Pecas>  {
   int _quant = 0;
   String _api;
 
-//  initState() {
-//
-//    //_inicialPecas();
-//
-//  }
-
-
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
 
@@ -46,9 +39,7 @@ class _PecasState extends State<Pecas>  {
         fontSize: 16.0
     );
 
-
   }
-
 
   Future<List> _recuperarPecas() async {
 
@@ -66,9 +57,7 @@ class _PecasState extends State<Pecas>  {
       setState(() {
         url = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
       });
-      //print(_busca);
 
-      //print(url);
     }
 
     http.Response response = await http.get(url);
@@ -78,64 +67,6 @@ class _PecasState extends State<Pecas>  {
     return _items;
 
   }
-
-  // CARREGA AS PEÇAS INICIAIS
-//  _inicialPecas() async {
-//
-//    _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token';
-//
-//    http.Response response;
-//
-//    response = await http.get(_api);
-//
-//    if(response.statusCode==200) {
-//
-//      setState(() {
-//        _items = json.decode(response.body) as List;
-//        //print(_items);
-//      });
-//
-//      setState(() {
-//        _quant = _items.length;
-//        //print(quant);
-//      });
-//
-//      //print(_items);
-//
-//    } else {
-//
-//      print("Erro no servidor - 500");
-//    }
-//
-//  }
-
-  // BUSCA PEÇAS
-//  Future<List> _buscaPecas() async {
-//
-//    var _busca = _controllerBusca.text.trim();
-//    print(_busca);
-//
-//    String _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
-//
-//    http.Response response = await http.get(_api);
-//
-//    return json.decode(response.body);
-//
-//    //print(_api);
-//
-//    //http.Response response;
-//
-//    //response = await http.get(_api);
-//
-//    //setState(() {
-//      //_items = json.decode(response.body) as List;
-//    //});
-//
-//    //setState(() {
-//     // _quant = _items.length;
-//    //});
-//
-//  }
 
   // ADICIONA PRODUTO NO CARRINHO
   addCart(idpeca, nome, valor) async {
@@ -172,35 +103,25 @@ class _PecasState extends State<Pecas>  {
 
     if (response.statusCode == 200) {
 
-
       String _resultAddCart = response.body;
-
-
-      // print('Resultado: $_result');
-
 
       if(_resultAddCart.isEmpty) {
 
         print('Erro ao adicionar o produto. Tente novamente');
         mensagemToast('Erro ao adicionar o produto. Tente novamente');
 
-
       } else {
 
-        //print('Produto adicionado com sucesso');
         mensagemToast('Produto adicionado com sucesso');
         // Navigator.pushNamed(context, '/carrinho');
 
       }
-
-
 
     } else {
 
       print('Erro 500');
 
     }
-
 
 
   }
