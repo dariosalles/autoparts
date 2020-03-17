@@ -20,13 +20,15 @@ class _CarrinhoState extends State<Carrinho> {
   int _token = 123456789;
 
   List _itemsC = [];
-  int _quantC = 0;
   String _apiC;
+  //double total;
+  String totalg;
 
 
   initState() {
 
-    _inicialCarrinho();
+    //_inicialCarrinho();
+    //getTotal();
 
 
   }
@@ -48,12 +50,10 @@ class _CarrinhoState extends State<Carrinho> {
 
   }
 
-  // CARREGA AS PEÇAS INICIAIS
-  _inicialCarrinho() async {
+  Future<List> _recuperarCarrinho() async {
 
     // shared
     SharedPreferences sp = await SharedPreferences.getInstance();
-
     email = sp.getString('email');
 
     //print(email);
@@ -65,48 +65,90 @@ class _CarrinhoState extends State<Carrinho> {
     http.Response response;
 
     response = await http.post(_apiC, body: {'email': email});
-    //response = await http.get(_apiC);
-
-    //print(response.body);
-
-    if(response.statusCode==200) {
-
-      setState(() {
-        _itemsC = json.decode(response.body) as List;
-        //print(_items);
-      });
-
-      setState(() {
-        _quantC = _itemsC.length;
-        //print(quant);
-      });
 
 
+    _itemsC = json.decode(response.body) as List;
+      //print(_items);
 
-    } else {
 
-      print("Erro no servidor - 500");
-    }
+//    NumberFormat formatter = NumberFormat("00.00");
+//    double total = 0;
+//    for(int i=0;i<_itemsC.length;i++) {
+//      total += double.parse(_itemsC[i]['valor']);
+//      //print('Total ' + total.toString());
+//    }
+//
+//      totalg = formatter.format(total.toString());
+//      print(totalg);
+
+    //getTotal();
+
+    return _itemsC;
+
+
 
   }
+
+//  // CARREGA AS PEÇAS INICIAIS
+//  _inicialCarrinho() async {
+//
+//    // shared
+//    SharedPreferences sp = await SharedPreferences.getInstance();
+//
+//    email = sp.getString('email');
+//
+//    //print(email);
+//
+//    _apiC = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_carrinho.php?token=$_token';
+//
+//    //print(_apiC);
+//
+//    http.Response response;
+//
+//    response = await http.post(_apiC, body: {'email': email});
+//    //response = await http.get(_apiC);
+//
+//    //print(response.body);
+//
+//    if(response.statusCode==200) {
+//
+//      setState(() {
+//        _itemsC = json.decode(response.body) as List;
+//        //print(_items);
+//      });
+//
+//      setState(() {
+//        _quantC = _itemsC.length;
+//        //print(quant);
+//      });
+//
+//
+//
+//    } else {
+//
+//      print("Erro no servidor - 500");
+//    }
+//
+//  }
   // GET TOTAL
-  getTotal() {
-
-    NumberFormat formatter = NumberFormat("00.00");
-    //double initialValue = num.parse(0.18941.toStringAsPrecision(2));
-    //double value = 0.19;
-
-    //print(formatter.format(initialValue));
-    //print(formatter.format(value));
-
-    double total = 0;
-    for(int i=0;i<_itemsC.length;i++) {
-      total += double.parse(_itemsC[i]['valor']);
-     //print('Total ' + total.toString());
-    }
-    return formatter.format(total);
-
-  }
+//  Future<String> _getTotal() async {
+//
+//    NumberFormat formatter = NumberFormat("00.00");
+//    //double initialValue = num.parse(0.18941.toStringAsPrecision(2));
+//    //double value = 0.19;
+//
+//    //print(formatter.format(initialValue));
+//    //print(formatter.format(value));
+//
+//    double total = 0;
+//    for(int i=0;i<_itemsC.length;i++) {
+//      total += double.parse(_itemsC[i]['valor']);
+//     //print('Total ' + total.toString());
+//    }
+//    //print(total);
+//    return formatter.format(total).toString();
+//
+//  }
 
   // AUMENTA QUANTIDADE DO PRODUTO
   aumentaQtde(idcarrinho,valor) async {
@@ -255,6 +297,9 @@ class _CarrinhoState extends State<Carrinho> {
 
     @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
         appBar: AppBar(
 
@@ -265,7 +310,6 @@ class _CarrinhoState extends State<Carrinho> {
         body: Container(
             padding: EdgeInsets.all(20),
             child: Column(
-              
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 20),
@@ -277,163 +321,221 @@ class _CarrinhoState extends State<Carrinho> {
                 ),
                 Expanded(
 
-                  child: ListView.builder(
-                      itemCount: _quantC,
-                      itemBuilder: (context, indice){
+                  child: FutureBuilder(
+                    future: _recuperarCarrinho(),
+                    builder: (context, snapshot){
 
-                        return ListTile(
+                      String resultado;
+                      bool _loading = false;
 
-                            onTap: (){
+                      switch(snapshot.connectionState) {
+                        case ConnectionState.done :
+                        //print('conexao none');
+                          if (snapshot.hasError){
 
-                            },
-                            title: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
+                            resultado = "Erro ao carregar os dados";
+                            //print(snapshot.hasError);
+                            print(snapshot.error);
 
-                                Row(
-                                  children: <Widget>[
+                          } else {
 
-                                    Text(_itemsC[indice]['peca'].toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold
-                                    ),)
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage('assets/img/pecas/'+_itemsC[indice]['imagem'].toString()),
-                                      radius: 50,
-                                    ),
-//                                    Column(
-//                                      children: <Widget>[
-//                                        Text(_itemsC[indice]['peca'].toString()),
-//                                        Text(_itemsC[indice]['valor'].toString()),
-//                                        //Text('Quant: ' + _itemsC[indice]['quant'].toString()),
-//                                      ],
-//                                    ),
-//                                    Column(
-//                                      children: <Widget>[
-//                                        Text('x ' + _itemsC[indice]['quant'].toString(),
-//                                        style: TextStyle(
-//                                          fontWeight: FontWeight.bold
-//                                        ),
-//                                        ),
-//                                      ],
-//                                    ),
-                                    Column(
+
+
+                            return ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, indice){
+
+
+
+                                      double total = 100;
+
+                                    //total += snapshot.data[indice]['valor'];
+                                    //print(total);
+
+
+
+                                  return ListTile(
+
+                                    onTap: (){
+
+                                    },
+                                    title: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
 
-                                        IconButton(
-                                          icon: Icon(Icons.add_circle),
-                                          color: Colors.green,
-                                          iconSize: 25,
-                                          tooltip: 'Excluir do Carrinho',
-                                          onPressed: () {
-                                           print('Clicado +');
+                                        Row(
+                                          children: <Widget>[
 
-                                           double valorp;
-                                           double quantp;
-                                           valorp = double.parse(_itemsC[indice]['valor']);
-                                           quantp = double.parse(_itemsC[indice]['quant']);
-                                           double valorpeca = valorp / quantp;
-                                           print(valorpeca);
-
-                                           aumentaQtde(_itemsC[indice]['id_carrinho'].toString(),valorpeca);
-                                          },
+                                            Text(snapshot.data[indice]['peca'].toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold
+                                              ),)
+                                          ],
                                         ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            CircleAvatar(
+                                              backgroundImage: AssetImage('assets/img/pecas/'+snapshot.data[indice]['imagem'].toString()),
+                                              radius: 50,
+                                            ),
 
-                                        Text('x ' + _itemsC[indice]['quant'].toString(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold
-                                          ),
+                                            Column(
+                                              children: <Widget>[
+
+                                                IconButton(
+                                                  icon: Icon(Icons.add_circle),
+                                                  color: Colors.green,
+                                                  iconSize: 25,
+                                                  tooltip: 'Excluir do Carrinho',
+                                                  onPressed: () {
+                                                    print('Clicado +');
+
+                                                    double valorp;
+                                                    double quantp;
+                                                    valorp = double.parse(snapshot.data[indice]['valor']);
+                                                    quantp = double.parse(snapshot.data[indice]['quant']);
+                                                    double valorpeca = valorp / quantp;
+                                                    print(valorpeca);
+
+                                                    aumentaQtde(snapshot.data[indice]['id_carrinho'].toString(),valorpeca);
+                                                  },
+                                                ),
+
+                                                Text('x ' + snapshot.data[indice]['quant'].toString(),
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.remove_circle),
+                                                  color: Colors.lightBlue,
+                                                  iconSize: 25,
+                                                  tooltip: 'Excluir do Carrinho',
+                                                  onPressed: () {
+                                                    print('Clicado -');
+
+                                                    double valorp;
+                                                    double quantp;
+                                                    valorp = double.parse(snapshot.data[indice]['valor']);
+                                                    quantp = double.parse(snapshot.data[indice]['quant']);
+                                                    double valorpeca = valorp / quantp;
+                                                    print(valorpeca);
+
+                                                    diminuiQtde(snapshot.data[indice]['id_carrinho'].toString(),valorpeca);
+                                                  },
+                                                ),
+
+                                              ],
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.delete),
+                                              color: Colors.red,
+                                              iconSize: 30,
+                                              tooltip: 'Excluir do Carrinho',
+                                              onPressed: () {
+                                                showDialog(context: context,
+                                                    builder: (context){
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius: BorderRadius.all(Radius.circular(20.0))
+                                                        ),
+                                                        title: Text('Deseja excluir do carrinho'),
+                                                        titlePadding: EdgeInsets.all(20),
+                                                        titleTextStyle: TextStyle(
+                                                            fontSize: 20,
+                                                            color: Colors.red
+                                                        ),
+                                                        content: Text(snapshot.data[indice]['peca'].toString(),
+                                                            textAlign: TextAlign.center),
+                                                        contentPadding: EdgeInsets.all(20),
+                                                        actions: <Widget>[
+                                                          RaisedButton(
+                                                            child: Text("Sim"),
+                                                            onPressed: (){
+                                                              print('sim');
+                                                              removeCart(snapshot.data[indice]['id_peca']);
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          RaisedButton(
+                                                            child: Text('Não'),
+                                                            onPressed: (){
+                                                              Navigator.pop(context);
+                                                            },
+                                                          )
+                                                        ],
+
+                                                      );
+                                                    });
+                                                //print('Clicado $indice');
+                                              },
+                                            ),
+
+                                          ],
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.remove_circle),
-                                          color: Colors.lightBlue,
-                                          iconSize: 25,
-                                          tooltip: 'Excluir do Carrinho',
-                                          onPressed: () {
-                                            print('Clicado -');
-
-                                            double valorp;
-                                            double quantp;
-                                            valorp = double.parse(_itemsC[indice]['valor']);
-                                            quantp = double.parse(_itemsC[indice]['quant']);
-                                            double valorpeca = valorp / quantp;
-                                            print(valorpeca);
-
-                                            diminuiQtde(_itemsC[indice]['id_carrinho'].toString(),valorpeca);
-                                          },
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            Text('= R\$ ' + snapshot.data[indice]['valor'])
+                                          ],
+                                        ),
+                                        Divider(
+                                          color: Colors.black26,
+                                          height: 20,
+                                          thickness: 2,
                                         ),
 
                                       ],
                                     ),
-                                    IconButton(
-                                      icon: Icon(Icons.delete),
-                                      color: Colors.red,
-                                      iconSize: 30,
-                                      tooltip: 'Excluir do Carrinho',
-                                      onPressed: () {
-                                        showDialog(context: context,
-                                            builder: (context){
-                                              return AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                                                ),
-                                                title: Text('Deseja excluir do carrinho'),
-                                                titlePadding: EdgeInsets.all(20),
-                                                titleTextStyle: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.red
-                                                ),
-                                                content: Text(_itemsC[indice]['peca'].toString(),
-                                                    textAlign: TextAlign.center),
-                                                contentPadding: EdgeInsets.all(20),
-                                                actions: <Widget>[
-                                                  RaisedButton(
-                                                    child: Text("Sim"),
-                                                    onPressed: (){
-                                                      print('sim');
-                                                      removeCart(_itemsC[indice]['id_peca']);
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  RaisedButton(
-                                                    child: Text('Não'),
-                                                    onPressed: (){
-                                                      Navigator.pop(context);
-                                                    },
-                                                  )
-                                                ],
 
-                                              );
-                                            });
-                                        //print('Clicado $indice');
-                                      },
-                                    ),
+                                  );
 
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text('= R\$ ' + _itemsC[indice]['valor'])
-                                  ],
-                                ),
-                              Divider(
-                                color: Colors.black26,
-                                height: 20,
-                                thickness: 2,
+                                });
+
+                          }
+                          break;
+                        case ConnectionState.waiting :
+
+                        //runLoading();
+
+                        //_loading ?
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                                //backgroundColor: Colors.red,
+                                strokeWidth: 5,
                               ),
+                              SizedBox(height: 10,),
+                              Text('Carregando Carrinho...',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20
+                                ),)
+                            ],
+                          );
+                          break;
 
-                              ],
-                            ),
-
-                        );
-
-                      }),
+                        case ConnectionState.active :
+                        //print('conexao active');
+                          break;
+                        case ConnectionState.none :
+                        //print('conexao none');
+                          break;
+                      }
+                      return Center(
+                        child: Text(resultado,
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),),
+                      );
+                    },
+                  ),
 
                 ),
                 Row(
@@ -444,26 +546,16 @@ class _CarrinhoState extends State<Carrinho> {
                       padding: EdgeInsets.only(bottom: 10, top: 10),
                       child: Row(
                         children: <Widget>[
-                          Text("Total:  ",
+                          Text("Total:  " ,
                             style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20
                             ),
                           ),
-                          Text("R\$ " + getTotal().toString(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25
-                          ),
-                          ),
                         ],
                       ),
-
-
                     ),
-
                   ],
                 ),
                 MaterialButton(

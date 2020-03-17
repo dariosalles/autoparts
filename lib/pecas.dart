@@ -25,11 +25,11 @@ class _PecasState extends State<Pecas>  {
   int _quant = 0;
   String _api;
 
-  initState() {
-
-    _inicialPecas();
-
-  }
+//  initState() {
+//
+//    //_inicialPecas();
+//
+//  }
 
 
   // MENSAGENS AMIGAVEIS
@@ -50,60 +50,92 @@ class _PecasState extends State<Pecas>  {
   }
 
 
+  Future<List> _recuperarPecas() async {
 
-  // CARREGA AS PEÇAS INICIAIS
-  _inicialPecas() async {
-
-    _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token';
-
-    http.Response response;
-
-    response = await http.get(_api);
-
-    if(response.statusCode==200) {
-
-      setState(() {
-        _items = json.decode(response.body) as List;
-        //print(_items);
-      });
-
-      setState(() {
-        _quant = _items.length;
-        //print(quant);
-      });
-
-      //print(_items);
-
-    } else {
-
-      print("Erro no servidor - 500");
-    }
-
-  }
-
-  // BUSCA PEÇAS
-  _buscaPecas() async {
+    String url;
 
     var _busca = _controllerBusca.text.trim();
-    print(_busca);
+    //print(_busca);
 
-    String _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
+    if(_busca.isEmpty) {
+      setState(() {
+        url = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=123456789";
+      });
 
-    //print(_api);
+    } else {
+      setState(() {
+        url = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
+      });
+      //print(_busca);
 
-    http.Response response;
+      //print(url);
+    }
 
-    response = await http.get(_api);
+    http.Response response = await http.get(url);
 
-    setState(() {
-      _items = json.decode(response.body) as List;
-    });
+    _items = json.decode(response.body) as List;
 
-    setState(() {
-      _quant = _items.length;
-    });
+    return _items;
 
   }
+
+  // CARREGA AS PEÇAS INICIAIS
+//  _inicialPecas() async {
+//
+//    _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token';
+//
+//    http.Response response;
+//
+//    response = await http.get(_api);
+//
+//    if(response.statusCode==200) {
+//
+//      setState(() {
+//        _items = json.decode(response.body) as List;
+//        //print(_items);
+//      });
+//
+//      setState(() {
+//        _quant = _items.length;
+//        //print(quant);
+//      });
+//
+//      //print(_items);
+//
+//    } else {
+//
+//      print("Erro no servidor - 500");
+//    }
+//
+//  }
+
+  // BUSCA PEÇAS
+//  Future<List> _buscaPecas() async {
+//
+//    var _busca = _controllerBusca.text.trim();
+//    print(_busca);
+//
+//    String _api = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
+//
+//    http.Response response = await http.get(_api);
+//
+//    return json.decode(response.body);
+//
+//    //print(_api);
+//
+//    //http.Response response;
+//
+//    //response = await http.get(_api);
+//
+//    //setState(() {
+//      //_items = json.decode(response.body) as List;
+//    //});
+//
+//    //setState(() {
+//     // _quant = _items.length;
+//    //});
+//
+//  }
 
   // ADICIONA PRODUTO NO CARRINHO
   addCart(idpeca, nome, valor) async {
@@ -217,70 +249,104 @@ class _PecasState extends State<Pecas>  {
           padding: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
-              TextField(
-                cursorWidth: 2,
-                keyboardType: TextInputType.text,
-                maxLength: 30,
-                decoration: InputDecoration(
-                    labelText: "Buscar peça",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        gapPadding: 4.00
-                    )
-                ),
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.black,
-                ),
-                controller: _controllerBusca,
-              ),
-              RaisedButton(
-                child: Text('Buscar'),
-                color: Colors.red,
-                textColor: Colors.white,
-                onPressed: (){
-                  _buscaPecas();
-                },
-              ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: 250,
+                    child:
+                    TextField(
+                    cursorWidth: 2,
+                    keyboardType: TextInputType.text,
+                    maxLength: 30,
+                    decoration: InputDecoration(
+                        labelText: "Buscar peça",
 
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            gapPadding: 4.00
+                        )
+                    ),
+                    style: TextStyle(
+                      fontSize: 25,
+                      color: Colors.black,
+                    ),
+                    controller: _controllerBusca,
+                  ),
+                  ),
+                  SizedBox(width: 15,),
+                  Container(
+                    width: 100,
+                    child:
+                    RaisedButton(
+                      child: Text('Buscar'),
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      onPressed: (){
+                        //_buscaPecas();
+                        _recuperarPecas();
+                      },
+                    ),
+                  )
+
+                ],
+              ),
               Expanded(
-                child: ListView.builder(
-                    itemCount: _quant,
-                    itemBuilder: (context, indice){
+                child: FutureBuilder(
+                  future: _recuperarPecas(),
+                  builder: (context, snapshot){
 
-                      return ListTile(
-                        onTap: (){
-                            goDetalhes(_items[indice]['id_peca'].toString());
-                        },
-                          title: Column(
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
+                    String resultado;
+                    bool _loading = false;
 
-                                  Text(_items[indice]['nome'].toString(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold
-                                    ),)
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                   backgroundImage: AssetImage('assets/img/pecas/' + _items[indice]['imagem'].toString(),
+                    switch(snapshot.connectionState) {
+                      case ConnectionState.done :
+                      //print('conexao none');
+                        if (snapshot.hasError){
+
+                          resultado = "Erro ao carregar os dados";
+                          //print(snapshot.hasError);
+                          print(snapshot.error);
+
+                        } else {
+
+                          return ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, indice) {
+
+                              return ListTile(
+                                onTap: () {
+                                  goDetalhes(snapshot.data[indice]['id_peca']
+                                      .toString());
+                                },
+                                title: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Text(snapshot.data[indice]['nome'].toString(),
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                    ],
                                     ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      CircleAvatar(
+                                        backgroundImage: AssetImage('assets/img/pecas/' + snapshot.data[indice]['imagem'].toString(),
+                                      ),
                                     radius: 50,
 
                                   ),
-                                  Column(
-                                    children: <Widget>[
-                                      Text(_items[indice]['marca'].toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold
+                                    Column(
+                                      children: <Widget>[
+                                        Text(snapshot.data[indice]['marca'].toString(),
+                                          style: TextStyle(
+                                          fontWeight: FontWeight.bold
                                       ),
                                       ),
-                                      Text(_items[indice]['modelo'].toString()),
-                                      Text('R\$ ' + _items[indice]['valor'].toString(),
+                                      Text(snapshot.data[indice]['modelo'].toString()),
+                                      Text('R\$ ' + snapshot.data[indice]['valor'].toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           color: Colors.black,
@@ -336,16 +402,67 @@ class _PecasState extends State<Pecas>  {
                                 ],
                               ),
 
-                              Divider(
-                                color: Colors.black12,
-                                height: 20,
-                                thickness: 2,
-                              )
-                            ],
-                          )
-                      );
+                                  Divider(
+                                  color: Colors.black12,
+                                  height: 20,
+                                  thickness: 2,
+                                )
 
-                    }),
+                                  ],
+                                ),
+
+                              );
+                            });
+
+                        }
+                        break;
+                      case ConnectionState.waiting :
+
+                      //runLoading();
+
+                        //_loading ?
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                              //backgroundColor: Colors.red,
+                              strokeWidth: 5,
+                            ),
+                            SizedBox(height: 10,),
+                            Text('Carregando Peças...',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                            ),)
+                            ],
+                          );
+
+
+                          //  : SizedBox(width: 0, height: 0,);
+
+                        //resultado = 'Carregando...';
+
+                        break;
+
+                      case ConnectionState.active :
+                      //print('conexao active');
+                        break;
+                      case ConnectionState.none :
+                      //print('conexao none');
+                        break;
+                    }
+                    return Center(
+                      child: Text(resultado,
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold
+                      ),),
+                    );
+                  },
+                ),
               )
             ],
           )

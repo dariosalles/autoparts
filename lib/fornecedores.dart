@@ -14,12 +14,12 @@ class _FornecedoresState extends State<Fornecedores> {
 
   String email;
 
-  initState() {
-
-    _inicialFornecedores();
-
-
-  }
+//  initState() {
+//
+//    _inicialFornecedores();
+//
+//
+//  }
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -47,56 +47,60 @@ class _FornecedoresState extends State<Fornecedores> {
   String _apiF;
 
   // CARREGA OS FORNECEDORES INICIAIS
-  _inicialFornecedores() async {
+  Future<List> _recuperarFornecedores() async {
 
-    _apiF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token';
+    String urlF;
 
-    http.Response response;
+    var _busca = _controllerBuscaF.text.trim();
+    //print(_busca);
 
-    response = await http.get(_apiF);
-
-    if(response.statusCode==200) {
-
+    if(_busca.isEmpty) {
       setState(() {
-        _itemsF = json.decode(response.body) as List;
-        //print(_items);
-      });
-
-      setState(() {
-        _quantF = _itemsF.length;
-        //print(quant);
+        urlF = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token";
       });
 
     } else {
+      setState(() {
+        urlF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token&busca=$_busca';
+      });
+      //print(_busca);
 
-      print("Erro no servidor - 500");
+      //print(url);
     }
+
+    //_apiF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token';
+
+    http.Response response = await http.get(urlF);
+
+    _itemsF = json.decode(response.body) as List;
+
+    return _itemsF;
 
   }
 
   // BUSCA PEÇAS
-  _buscaFornecedores() async {
-
-    var _buscaF = _controllerBuscaF.text.trim();
-    print(_buscaF);
-
-    String _apiF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token&busca=$_buscaF';
-
-    print(_apiF);
-
-    http.Response response;
-
-    response = await http.get(_apiF);
-
-    setState(() {
-      _itemsF = json.decode(response.body) as List;
-    });
-
-    setState(() {
-      _quantF = _itemsF.length;
-    });
-
-  }
+//  _buscaFornecedores() async {
+//
+//    var _buscaF = _controllerBuscaF.text.trim();
+//    print(_buscaF);
+//
+//    String _apiF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token&busca=$_buscaF';
+//
+//    print(_apiF);
+//
+//    http.Response response;
+//
+//    response = await http.get(_apiF);
+//
+//    setState(() {
+//      _itemsF = json.decode(response.body) as List;
+//    });
+//
+//    setState(() {
+//      _quantF = _itemsF.length;
+//    });
+//
+//  }
 
   goDetalhesFornecedores(idfornecedor) async{
 
@@ -123,72 +127,154 @@ class _FornecedoresState extends State<Fornecedores> {
             padding: EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
-                TextField(
-                  cursorWidth: 2,
-                  keyboardType: TextInputType.text,
-                  maxLength: 30,
-                  decoration: InputDecoration(
-                      labelText: "Buscar Fornecedores",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          gapPadding: 4.00
-                      )
-                  ),
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.black,
-                  ),
-                  controller: _controllerBuscaF,
-                ),
-                RaisedButton(
-                  child: Text('Buscar'),
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  onPressed: (){
-                    _buscaFornecedores();
-                  },
-                ),
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 250,
+                      child:
+                      TextField(
+                        cursorWidth: 2,
+                        keyboardType: TextInputType.text,
+                        maxLength: 30,
+                        decoration: InputDecoration(
+                            labelText: "Buscar fornecedor",
 
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                                gapPadding: 4.00
+                            )
+                        ),
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                        ),
+                        controller: _controllerBuscaF,
+                      ),
+                    ),
+                    SizedBox(width: 15,),
+                    Container(
+                      width: 100,
+                      child:
+                      RaisedButton(
+                        child: Text('Buscar'),
+                        color: Colors.red,
+                        textColor: Colors.white,
+                        onPressed: (){
+                          //_buscaPecas();
+                          _recuperarFornecedores();
+                        },
+                      ),
+                    )
+
+                  ],
+                ),
                 Expanded(
-                  child: ListView.builder(
-                      itemCount: _quantF,
-                      itemBuilder: (context, indice){
+                  child: FutureBuilder(
+                    future: _recuperarFornecedores(),
+                    builder: (context, snapshot){
 
-                        return ListTile(
-                            onTap: (){
-                              goDetalhesFornecedores(_itemsF[indice]['id_fornecedor'].toString());
+                      String resultado;
+                      bool _loading = false;
 
-                            },
-                            title: Column(
-                              children: <Widget>[
-                                //Text("titulo"),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Image.asset('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString(),
-                                      width: 100,
-                                      height: 100
-                                    ),
+                      switch(snapshot.connectionState) {
+                        case ConnectionState.done :
+                        //print('conexao none');
+                          if (snapshot.hasError){
 
+                            resultado = "Erro ao carregar os dados";
+                            //print(snapshot.hasError);
+                            print(snapshot.error);
 
-//                                    Image.asset('assets/img/fornecedores/' + _itemsF[indice]['imagem'].toString(),
-//                                      width: 100,
-//                                      height: 100,
-//                                      fit: BoxFit.cover,
-//                                    ),
-                                    Column(
+                          } else {
+
+                            return ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, indice) {
+
+                                  return ListTile(
+                                    onTap: () {
+                                      goDetalhesFornecedores(snapshot.data[indice]['id_fornecedor']
+                                          .toString());
+                                    },
+                                    title: Column(
                                       children: <Widget>[
-                                        Text(_itemsF[indice]['fornecedor'].toString()),
-                                        //Text(_itemsF[indice]['descricao'].toString()),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            CircleAvatar(
+                                              backgroundImage: AssetImage('assets/img/fornecedores/' + snapshot.data[indice]['imagem'].toString(),
+                                              ),
+                                              radius: 50,
+                                            ),
+                                            Text(snapshot.data[indice]['fornecedor'].toString(),
+                                                  style: TextStyle(
+                                                  fontWeight: FontWeight.bold
+                                              ),
+                                            )
+                                          ],
+                                        ),
+
+                                        Divider(
+                                          color: Colors.black12,
+                                          height: 20,
+                                          thickness: 2,
+                                        )
+
                                       ],
                                     ),
-                                  ],
-                                ),
-                              ],
-                            )
-                        );
 
-                      }),
+                                  );
+                                });
+
+                          }
+                          break;
+                        case ConnectionState.waiting :
+
+                        //runLoading();
+
+                        //_loading ?
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                                //backgroundColor: Colors.red,
+                                strokeWidth: 5,
+                              ),
+                              SizedBox(height: 10,),
+                              Text('Carregando Fornecedores...',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20
+                                ),)
+                            ],
+                          );
+
+
+                          //  : SizedBox(width: 0, height: 0,);
+
+                          //resultado = 'Carregando...';
+
+                          break;
+
+                        case ConnectionState.active :
+                        //print('conexao active');
+                          break;
+                        case ConnectionState.none :
+                        //print('conexao none');
+                          break;
+                      }
+                      return Center(
+                        child: Text(resultado,
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold
+                          ),),
+                      );
+                    },
+                  ),
                 )
               ],
             )
