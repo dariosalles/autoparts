@@ -5,7 +5,6 @@ import 'package:auto_parts/menuDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
 
 class Carrinho extends StatefulWidget {
   @override
@@ -23,15 +22,6 @@ class _CarrinhoState extends State<Carrinho> {
   String _apiC;
   //double total;
   String totalg;
-
-
-  initState() {
-
-    //_inicialCarrinho();
-    //getTotal();
-
-
-  }
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -326,7 +316,7 @@ class _CarrinhoState extends State<Carrinho> {
                     builder: (context, snapshot){
 
                       String resultado;
-                      bool _loading = false;
+                      //bool _loading = false;
 
                       switch(snapshot.connectionState) {
                         case ConnectionState.done :
@@ -347,7 +337,7 @@ class _CarrinhoState extends State<Carrinho> {
 
 
 
-                                      double total = 100;
+                                      //double total = 100;
 
                                     //total += snapshot.data[indice]['valor'];
                                     //print(total);

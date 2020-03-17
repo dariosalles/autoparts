@@ -188,7 +188,7 @@ class _PecasState extends State<Pecas>  {
                             )
                         ),
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.black,
                         ),
                         controller: _controllerBusca,
@@ -351,7 +351,7 @@ class _PecasState extends State<Pecas>  {
                                 //backgroundColor: Colors.red,
                                 strokeWidth: 5,
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(height: 10),
                               Text('Carregando Peças...',
                                 style: TextStyle(
                                     color: Colors.red,

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -78,30 +80,6 @@ class _FornecedoresState extends State<Fornecedores> {
 
   }
 
-  // BUSCA PEÇAS
-//  _buscaFornecedores() async {
-//
-//    var _buscaF = _controllerBuscaF.text.trim();
-//    print(_buscaF);
-//
-//    String _apiF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token&busca=$_buscaF';
-//
-//    print(_apiF);
-//
-//    http.Response response;
-//
-//    response = await http.get(_apiF);
-//
-//    setState(() {
-//      _itemsF = json.decode(response.body) as List;
-//    });
-//
-//    setState(() {
-//      _quantF = _itemsF.length;
-//    });
-//
-//  }
-
   goDetalhesFornecedores(idfornecedor) async{
 
     SharedPreferences sp = await SharedPreferences.getInstance();
@@ -145,7 +123,7 @@ class _FornecedoresState extends State<Fornecedores> {
                             )
                         ),
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.black,
                         ),
                         controller: _controllerBuscaF,
@@ -201,10 +179,9 @@ class _FornecedoresState extends State<Fornecedores> {
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
-                                            CircleAvatar(
-                                              backgroundImage: AssetImage('assets/img/fornecedores/' + snapshot.data[indice]['imagem'].toString(),
-                                              ),
-                                              radius: 50,
+                                             Image.asset('assets/img/fornecedores/' + snapshot.data[indice]['imagem'].toString(),
+                                              width: 120,
+                                               height: 120,
                                             ),
                                             Text(snapshot.data[indice]['fornecedor'].toString(),
                                                   style: TextStyle(
