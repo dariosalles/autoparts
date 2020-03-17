@@ -184,6 +184,22 @@ class _MenuDrawerState extends State<MenuDrawer> {
                         style: optionStyle),
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.list),
+                      color: Colors.red,
+                      iconSize: 30,
+                      tooltip: 'Meus pedidos',
+                      onPressed: () {
+                        print('Recarrega a pagina Meus Pedidos');
+                        Navigator.pushNamed(context, '/pedidos');
+                      },
+                    ),
+                    Text('Meus Pedidos ',
+                        style: optionStyle),
+                  ],
+                ),
                 Divider(
                   color: Colors.black12,
                   height: 20,

@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'esqueci.dart';
 import 'fornecedores.dart';
 import 'fornecedores_mapa.dart';
+import 'package:auto_parts/pedidos.dart';
 
 void main() {
 
@@ -32,7 +33,8 @@ void main() {
       '/carrinho': (context) => Carrinho(),
       '/cadastro': (context) => Cadastro(),
       '/fornecedores': (context) => Fornecedores(),
-      '/esqueci': (context) => Esqueci()
+      '/esqueci': (context) => Esqueci(),
+      '/pedidos': (context) => Pedidos()
 
     },
   ));

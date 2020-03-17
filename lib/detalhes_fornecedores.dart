@@ -35,23 +35,23 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
   //int _quantD = 0;
   String _apiDetalhesF;
 
-  AnimationController controller;
-  Animation<double> animation;
+//  AnimationController controller;
+//  Animation<double> animation;
 
-  @override
-  void initState() {
-    super.initState();
-
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    animation = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: controller, curve: Curves.easeInToLinear));
-    controller.forward();
-
-    //_recuperaIdFornecedor();
-
-
-  }
+//  @override
+//  void initState() {
+//    super.initState();
+////
+////    controller =
+////        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+////    animation = Tween<double>(begin: 0, end: 1).animate(
+////        CurvedAnimation(parent: controller, curve: Curves.easeInToLinear));
+////    controller.forward();
+//
+//    //_recuperaIdFornecedor();
+//
+//
+//  }
 
 //  _recuperaIdFornecedor() async {
 //
@@ -483,7 +483,6 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
                           Padding(
                             padding: EdgeInsets.all(50),
                             child: Container(
-                              padding: EdgeInsets.all(0),
                               child: Image.asset('assets/img/fornecedores/' + snapshot.data[0]['imagem'],
                               ),
                             ),
@@ -669,22 +668,22 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
                     //print('waiting');
 
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      //mainAxisAlignment: MainAxisAlignment.end,
+                      //crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                          //backgroundColor: Colors.red,
-                          strokeWidth: 5,
-                        ),
-                        SizedBox(height: 10),
-                        Text('Carregando Dados...',
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
-                          ),)
-                      ],
+                            CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                              //backgroundColor: Colors.red,
+                              strokeWidth: 5,
+                            ),
+                            SizedBox(height: 20),
+                            Text('Carregando Dados...',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20
+                              ),)
+                          ],
                     );
 
 
