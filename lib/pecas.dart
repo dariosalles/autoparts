@@ -38,24 +38,31 @@ class _CategoriasState extends State<Categorias> {
                   )
                 ),
                 Container(
-                    width: 160.0,
+                    width: 100.0,
                     child: FlatButton(
                         onPressed: (){
                           print('botao apertado');
                         },
                         padding: EdgeInsets.all(0.0),
                         child: CircleAvatar(
+//                          child: Text('Amortecedores',
+//                          style: TextStyle(
+//                            fontSize: 10,
+//                            fontWeight: FontWeight.bold,
+//                            color: Colors.white
+//                          ),
+//                          ),
                           backgroundColor: Colors.red,
                           backgroundImage: AssetImage('assets/img/categorias/cat_amortecedor.png',
                           ),
-                          radius: 50,
+                          radius: 40,
 
                         ),
                         //Image.asset('assets/img/categorias/cat_amortecedor.png')
                     )
                 ),
                 Container(
-                    width: 160.0,
+                    width: 100.0,
                     child: FlatButton(
                       onPressed: (){
                         print('botao apertado');
@@ -65,14 +72,14 @@ class _CategoriasState extends State<Categorias> {
                         backgroundColor: Colors.red,
                         backgroundImage: AssetImage('assets/img/categorias/cat_combustivel.png',
                         ),
-                        radius: 50,
+                        radius: 40,
 
                       ),
                       //Image.asset('assets/img/categorias/cat_amortecedor.png')
                     )
                 ),
                 Container(
-                    width: 160.0,
+                    width: 100.0,
                     child: FlatButton(
                       onPressed: (){
                         print('botao apertado');
@@ -82,14 +89,14 @@ class _CategoriasState extends State<Categorias> {
                         backgroundColor: Colors.red,
                         backgroundImage: AssetImage('assets/img/categorias/cat_ignicao.png',
                         ),
-                        radius: 50,
+                        radius: 40,
 
                       ),
                       //Image.asset('assets/img/categorias/cat_amortecedor.png')
                     )
                 ),
                 Container(
-                    width: 160.0,
+                    width: 100.0,
                     child: FlatButton(
                       onPressed: (){
                         print('botao apertado');
@@ -99,14 +106,14 @@ class _CategoriasState extends State<Categorias> {
                         backgroundColor: Colors.red,
                         backgroundImage: AssetImage('assets/img/categorias/cat_vidros.png',
                         ),
-                        radius: 50,
+                        radius: 40,
 
                       ),
                       //Image.asset('assets/img/categorias/cat_amortecedor.png')
                     )
                 ),
                 Container(
-                    width: 160.0,
+                    width: 100.0,
                     child: FlatButton(
                       onPressed: (){
                         print('botao apertado');
@@ -116,7 +123,7 @@ class _CategoriasState extends State<Categorias> {
                         backgroundColor: Colors.red,
                         backgroundImage: AssetImage('assets/img/categorias/cat_retrovisores.png',
                         ),
-                        radius: 50,
+                        radius: 40,
 
                       ),
                       //Image.asset('assets/img/categorias/cat_amortecedor.png')
@@ -294,11 +301,12 @@ class _PecasState extends State<Pecas>  {
         ),
         drawer: MenuDrawer(),
         body: Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(0),
             child: Column(
               children: <Widget>[
                 Categorias(),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: 250,
