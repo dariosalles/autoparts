@@ -5,6 +5,132 @@ import 'menuDrawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+class Categorias extends StatefulWidget {
+  @override
+  _CategoriasState createState() => _CategoriasState();
+}
+
+class _CategoriasState extends State<Categorias> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(bottom: 20),
+        height: 100,
+        child: ListView(
+              // This next line does the trick.
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                Container(
+                  width: 120.0,
+                  //color: Colors.red,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Categorias',
+                      style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
+                      ),)
+                    ],
+                  )
+                ),
+                Container(
+                    width: 160.0,
+                    child: FlatButton(
+                        onPressed: (){
+                          print('botao apertado');
+                        },
+                        padding: EdgeInsets.all(0.0),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                          backgroundImage: AssetImage('assets/img/categorias/cat_amortecedor.png',
+                          ),
+                          radius: 50,
+
+                        ),
+                        //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                    )
+                ),
+                Container(
+                    width: 160.0,
+                    child: FlatButton(
+                      onPressed: (){
+                        print('botao apertado');
+                      },
+                      padding: EdgeInsets.all(0.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.red,
+                        backgroundImage: AssetImage('assets/img/categorias/cat_combustivel.png',
+                        ),
+                        radius: 50,
+
+                      ),
+                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                    )
+                ),
+                Container(
+                    width: 160.0,
+                    child: FlatButton(
+                      onPressed: (){
+                        print('botao apertado');
+                      },
+                      padding: EdgeInsets.all(0.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.red,
+                        backgroundImage: AssetImage('assets/img/categorias/cat_ignicao.png',
+                        ),
+                        radius: 50,
+
+                      ),
+                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                    )
+                ),
+                Container(
+                    width: 160.0,
+                    child: FlatButton(
+                      onPressed: (){
+                        print('botao apertado');
+                      },
+                      padding: EdgeInsets.all(0.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.red,
+                        backgroundImage: AssetImage('assets/img/categorias/cat_vidros.png',
+                        ),
+                        radius: 50,
+
+                      ),
+                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                    )
+                ),
+                Container(
+                    width: 160.0,
+                    child: FlatButton(
+                      onPressed: (){
+                        print('botao apertado');
+                      },
+                      padding: EdgeInsets.all(0.0),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.red,
+                        backgroundImage: AssetImage('assets/img/categorias/cat_retrovisores.png',
+                        ),
+                        radius: 50,
+
+                      ),
+                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                    )
+                ),
+              ],
+            )
+
+
+
+    );
+  }
+}
+
 // PAGE PEÇAS
 class Pecas extends StatefulWidget {
   @override
@@ -143,6 +269,7 @@ class _PecasState extends State<Pecas>  {
     Navigator.pushNamed(context, '/detalhes');
   }
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -170,6 +297,7 @@ class _PecasState extends State<Pecas>  {
             padding: EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
+                Categorias(),
                 Row(
                   children: <Widget>[
                     Container(
@@ -207,10 +335,11 @@ class _PecasState extends State<Pecas>  {
                           _recuperarPecas();
                         },
                       ),
-                    )
 
+                    ),
                   ],
                 ),
+
                 Expanded(
                   child: FutureBuilder(
                     future: _recuperarPecas(),

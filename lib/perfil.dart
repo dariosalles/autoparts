@@ -41,7 +41,25 @@ class _PerfilState extends State<Perfil> {
     ),
       drawer: MenuDrawer(),
       body: Container(
-        child: Text('perfil'),
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 20),
+            height: 100,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                Container(
+                  width: 10.0,
+                  color: Colors.red,
+                ),
+                Container(
+                  width: 10.0,
+                  color: Colors.blue,
+                ),
+              ],
+            )
+
+
+        )
 
         )
     );

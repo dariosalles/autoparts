@@ -76,6 +76,11 @@ flutter:
   - assets/img/icon.png
   - assets/img/fundoavatar.jpeg
   - assets/img/pin.png
+  - assets/img/categorias/cat_amortecedor.png
+  - assets/img/categorias/cat_combustivel.png
+  - assets/img/categorias/cat_ignicao.png
+  - assets/img/categorias/cat_vidros.png
+  - assets/img/categorias/cat_retrovisores.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
