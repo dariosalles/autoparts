@@ -15,118 +15,282 @@ class _CategoriasState extends State<Categorias> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(bottom: 20),
-        height: 100,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 204, 37, 1), // I played with different colors code for get transparency of color but Alway display White.
+        ),
+        margin: EdgeInsets.only(top: 0, bottom: 20),
+        height: 160,
         child: ListView(
               // This next line does the trick.
               scrollDirection: Axis.horizontal,
               children: <Widget>[
+//                Container(
+//                  width: 120.0,
+//                  child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.center,
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+//                    children: <Widget>[
+//                      Text('Categorias',
+//                      style: TextStyle(
+//                        color: Colors.white,
+//                        fontSize: 20,
+//                        fontWeight: FontWeight.bold
+//                      ),)
+//                    ],
+//                  )
+//                ),
                 Container(
-                  width: 120.0,
-                  //color: Colors.red,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Categorias',
-                      style: TextStyle(
-                        color: Colors.blueGrey,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),)
-                    ],
-                  )
-                ),
-                Container(
-                    width: 100.0,
-                    child: FlatButton(
-                        onPressed: (){
-                          print('botao apertado');
-                        },
-                        padding: EdgeInsets.all(0.0),
-                        child: CircleAvatar(
-//                          child: Text('Amortecedores',
-//                          style: TextStyle(
-//                            fontSize: 10,
-//                            fontWeight: FontWeight.bold,
-//                            color: Colors.white
-//                          ),
-//                          ),
-                          backgroundColor: Colors.red,
-                          backgroundImage: AssetImage('assets/img/categorias/cat_amortecedor.png',
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_acessorios.png',
+                            ),
+                            radius: 40,
                           ),
-                          radius: 40,
-
                         ),
-                        //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                        Text('Acessórios',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
                     )
                 ),
                 Container(
-                    width: 100.0,
-                    child: FlatButton(
-                      onPressed: (){
-                        print('botao apertado');
-                      },
-                      padding: EdgeInsets.all(0.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        backgroundImage: AssetImage('assets/img/categorias/cat_combustivel.png',
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_amortecedor.png',
+                            ),
+                            radius: 40,
+                          ),
                         ),
-                        radius: 40,
-
-                      ),
-                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                        Text('Amortecedores',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                        ),
+                        )
+                      ],
                     )
                 ),
                 Container(
-                    width: 100.0,
-                    child: FlatButton(
-                      onPressed: (){
-                        print('botao apertado');
-                      },
-                      padding: EdgeInsets.all(0.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        backgroundImage: AssetImage('assets/img/categorias/cat_ignicao.png',
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_combustivel.png',
+                            ),
+                            radius: 40,
+                          ),
                         ),
-                        radius: 40,
-
-                      ),
-                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                        Text('Alimentação',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        ),
+                        Text('Combustível',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
                     )
                 ),
                 Container(
-                    width: 100.0,
-                    child: FlatButton(
-                      onPressed: (){
-                        print('botao apertado');
-                      },
-                      padding: EdgeInsets.all(0.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        backgroundImage: AssetImage('assets/img/categorias/cat_vidros.png',
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_eletrico.png',
+                            ),
+                            radius: 40,
+                          ),
                         ),
-                        radius: 40,
-
-                      ),
-                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                        Text('Elétrico',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
                     )
                 ),
                 Container(
-                    width: 100.0,
-                    child: FlatButton(
-                      onPressed: (){
-                        print('botao apertado');
-                      },
-                      padding: EdgeInsets.all(0.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        backgroundImage: AssetImage('assets/img/categorias/cat_retrovisores.png',
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_freios.png',
+                            ),
+                            radius: 40,
+                          ),
                         ),
-                        radius: 40,
+                        Text('Freios',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_ignicao.png',
+                            ),
+                            radius: 40,
 
-                      ),
-                      //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                          ),
+                          //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                        ),
+                        Text('Ignição',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_iluminacao.png',
+                            ),
+                            radius: 40,
+
+                          ),
+                          //Image.asset('assets/img/categorias/cat_amortecedor.png')
+                        ),
+                        Text('Iluminação',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_retrovisores.png',
+                            ),
+                            radius: 40,
+                          ),
+                        ),
+                        Text('Retrovisores',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
+                    )
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    width: 140.0,
+                    child: Column(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: (){
+                            print('botao apertado');
+                          },
+                          padding: EdgeInsets.all(0.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            backgroundImage: AssetImage('assets/img/categorias/cat_vidros.png',
+                            ),
+                            radius: 40,
+                          ),
+                        ),
+                        Text('Vidros',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                          ),
+                        )
+                      ],
                     )
                 ),
               ],

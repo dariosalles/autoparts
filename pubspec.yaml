@@ -81,6 +81,10 @@ flutter:
   - assets/img/categorias/cat_ignicao.png
   - assets/img/categorias/cat_vidros.png
   - assets/img/categorias/cat_retrovisores.png
+  - assets/img/categorias/cat_freios.png
+  - assets/img/categorias/cat_eletrico.png
+  - assets/img/categorias/cat_iluminacao.png
+  - assets/img/categorias/cat_acessorios.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
