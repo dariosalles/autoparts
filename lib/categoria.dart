@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'include_categorias.dart';
 import 'menuDrawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_parts/include_categorias.dart';
 
-
-// PAGE PEÇAS
-class Pecas extends StatefulWidget {
+class Categoria extends StatefulWidget {
   @override
-  _PecasState createState() => _PecasState();
+  _CategoriaState createState() => _CategoriaState();
 }
 
-class _PecasState extends State<Pecas>  {
-
-
-  String email;
-  String url;
+class _CategoriaState extends State<Categoria>  {
 
   //TOKEN
   int _token = 123456789;
 
-  List _items = [];
+  List _itemsCat = [];
+
+  String urlcat;
+
+  String id_categoria;
 
   //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
-  TextEditingController _controllerBusca = TextEditingController();
+  TextEditingController _controllerBuscaCategoria = TextEditingController();
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -43,30 +41,42 @@ class _PecasState extends State<Pecas>  {
 
   }
 
-  Future<List> _recuperarPecas() async {
 
-    var _busca = _controllerBusca.text.trim();
-    //print(_busca);
+  Future<List> _recuperarCategoria() async {
 
-    if(_busca.isEmpty) {
-      setState(() {
-        url = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token";
-      });
+    //RECUPERA O IDCATEGORIA
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    String id_categoria = sp.getString('id_categoria');
+
+    var _buscaCategoria = _controllerBuscaCategoria.text.trim();
+    //print(_buscaCategoria);
+
+    if(_buscaCategoria.isEmpty) {
+
+      //setState(() {
+        urlcat = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php?token=$_token&id_categoria=$id_categoria";
+
+      //});
+
+      print(urlcat);
 
     } else {
-      setState(() {
-        url = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
-      });
 
+        //setState(() {
+          urlcat = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php?token=$_token&id_categoria=$id_categoria&busca=$_buscaCategoria';
+        //});
+
+        //print(urlcat);
     }
 
-    //print(url);
+    //print(urlcat);
 
-    http.Response response = await http.get(url);
 
-    _items = json.decode(response.body) as List;
+    http.Response response = await http.get(urlcat);
 
-    return _items;
+    _itemsCat = json.decode(response.body) as List;
+
+    return _itemsCat;
 
   }
 
@@ -152,7 +162,7 @@ class _PecasState extends State<Pecas>  {
     return Scaffold(
         appBar: AppBar(
 
-          title: Text('Peças'),
+          title: Text('Categoria'),
           backgroundColor: Color.fromARGB(255, 204, 37, 1),
           actions: <Widget>[
             IconButton(
@@ -177,49 +187,49 @@ class _PecasState extends State<Pecas>  {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      width: 250,
-                      child:
-                      TextField(
-                        cursorWidth: 2,
-                        keyboardType: TextInputType.text,
-                        maxLength: 30,
-                        decoration: InputDecoration(
-                            labelText: "Buscar peça",
-
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                gapPadding: 4.00
-                            )
-                        ),
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                        controller: _controllerBusca,
-                      ),
-                    ),
-                    SizedBox(width: 15,),
-                    Container(
-                      width: 100,
-                      child:
-                      RaisedButton(
-                        child: Text('Buscar'),
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        onPressed: (){
-                          //_buscaPecas();
-                          _recuperarPecas();
-                        },
-                      ),
-
-                    ),
+//                    Container(
+//                      width: 250,
+//                      child:
+//                      TextField(
+//                        cursorWidth: 2,
+//                        keyboardType: TextInputType.text,
+//                        maxLength: 30,
+//                        decoration: InputDecoration(
+//                            labelText: "Buscar peça na categoria",
+//
+//                            border: OutlineInputBorder(
+//                                borderRadius: BorderRadius.all(Radius.circular(10)),
+//                                gapPadding: 4.00
+//                            )
+//                        ),
+//                        style: TextStyle(
+//                          fontSize: 20,
+//                          color: Colors.black,
+//                        ),
+//                        controller: _controllerBuscaCategoria,
+//                      ),
+//                    ),
+//                    SizedBox(width: 15,),
+//                    Container(
+//                      width: 100,
+//                      child:
+//                      RaisedButton(
+//                        child: Text('Buscar'),
+//                        color: Colors.red,
+//                        textColor: Colors.white,
+//                        onPressed: (){
+//
+//                          _recuperarCategoria();
+//                        },
+//                      ),
+//
+//                    ),
                   ],
                 ),
 
                 Expanded(
                   child: FutureBuilder(
-                    future: _recuperarPecas(),
+                    future: _recuperarCategoria(),
                     builder: (context, snapshot){
 
                       String resultado;
@@ -299,7 +309,7 @@ class _PecasState extends State<Pecas>  {
                                                             fontSize: 20,
                                                             color: Colors.red
                                                         ),
-                                                        content: Text(_items[indice]['nome'].toString(),
+                                                        content: Text(_itemsCat[indice]['nome'].toString(),
                                                             textAlign: TextAlign.center),
                                                         contentPadding: EdgeInsets.all(20),
                                                         actions: <Widget>[
@@ -307,7 +317,7 @@ class _PecasState extends State<Pecas>  {
                                                             child: Text("Sim"),
                                                             onPressed: (){
                                                               print('sim');
-                                                              addCart(_items[indice]['id_peca'],_items[indice]['nome'],_items[indice]['valor']);
+                                                              addCart(_itemsCat[indice]['id_peca'],_itemsCat[indice]['nome'],_itemsCat[indice]['valor']);
                                                               Navigator.pop(context);
                                                             },
                                                           ),
@@ -357,7 +367,7 @@ class _PecasState extends State<Pecas>  {
                                 strokeWidth: 5,
                               ),
                               SizedBox(height: 10),
-                              Text('Carregando Peças...',
+                              Text('Carregando Categoria...',
                                 style: TextStyle(
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold,

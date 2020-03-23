@@ -10,6 +10,7 @@ import 'package:auto_parts/screen_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'categoria.dart';
 import 'esqueci.dart';
 import 'fornecedores.dart';
 import 'fornecedores_mapa.dart';
@@ -34,7 +35,8 @@ void main() {
       '/cadastro': (context) => Cadastro(),
       '/fornecedores': (context) => Fornecedores(),
       '/esqueci': (context) => Esqueci(),
-      '/pedidos': (context) => Pedidos()
+      '/pedidos': (context) => Pedidos(),
+      '/categoria': (context) => Categoria(),
 
     },
   ));
