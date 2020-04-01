@@ -23,7 +23,6 @@ class _CarrinhoState extends State<Carrinho> {
   int quant = 0;
   List _itemsC = [];
   String _apiC;
-  //double total;
   String totalg;
 
   // MENSAGENS AMIGAVEIS

@@ -50,19 +50,23 @@ class _PecasState extends State<Pecas>  {
 
     if(_busca.isEmpty) {
       setState(() {
-        url = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token";
+        url = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php";
       });
 
     } else {
       setState(() {
-        url = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?token=$_token&busca=$_busca';
+        url = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?busca=$_busca';
       });
 
     }
 
     //print(url);
 
-    http.Response response = await http.get(url);
+    //http.Response response = await http.get(url);
+
+    http.Response response;
+
+    response = await http.post(url, body: {'token': _token.toString()});
 
     _items = json.decode(response.body) as List;
 

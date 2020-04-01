@@ -644,18 +644,18 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
 
                           ),
                           SizedBox(height: 20),
-                          MaterialButton(
-                            onPressed: (){},
-                            color: Colors.red,
-                            child: Text('Produtos',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white
-                              ),
-                            ),
-                            elevation: 10,
-
-                          ),
+//                          MaterialButton(
+//                            onPressed: (){},
+//                            color: Colors.red,
+//                            child: Text('Produtos',
+//                              style: TextStyle(
+//                                  fontSize: 20,
+//                                  color: Colors.white
+//                              ),
+//                            ),
+//                            elevation: 10,
+//
+//                          ),
                         ],
 
                       );

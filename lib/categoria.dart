@@ -54,16 +54,16 @@ class _CategoriaState extends State<Categoria>  {
     if(_buscaCategoria.isEmpty) {
 
       //setState(() {
-        urlcat = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php?token=$_token&id_categoria=$id_categoria";
+        urlcat = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php";
 
       //});
 
-      print(urlcat);
+      //print(urlcat);
 
     } else {
 
         //setState(() {
-          urlcat = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php?token=$_token&id_categoria=$id_categoria&busca=$_buscaCategoria';
+          urlcat = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php?busca=$_buscaCategoria';
         //});
 
         //print(urlcat);
@@ -72,7 +72,11 @@ class _CategoriaState extends State<Categoria>  {
     //print(urlcat);
 
 
-    http.Response response = await http.get(urlcat);
+    //http.Response response = await http.get(urlcat);
+
+    http.Response response;
+
+    response = await http.post(urlcat, body: {'token': _token.toString(), 'id_categoria': id_categoria });
 
     _itemsCat = json.decode(response.body) as List;
 
