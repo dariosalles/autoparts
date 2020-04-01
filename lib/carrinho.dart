@@ -120,7 +120,7 @@ class _CarrinhoState extends State<Carrinho> {
       Map<dynamic, dynamic> _corpo = {
         'id_carrinho': _idcarrinho,
         'valor': _valor,
-        'qtde': qtde,
+        'qtde': qtde.toString(),
         'token': _token.toString()
       };
 
