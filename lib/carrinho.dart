@@ -323,9 +323,13 @@ class _CarrinhoState extends State<Carrinho> {
                                     children: <Widget>[
                                       IconButton(
                                         icon: Icon(Icons.remove_shopping_cart),
-                                        color: Colors.green,
+                                        color: Colors.black,
                                         iconSize: 25,
                                         tooltip: 'Carrinho Free',
+                                        onPressed: (){
+
+                                          Navigator.pushNamed(context, '/pecas');
+                                        },
 
                                       ),
                                       Text("Carrinho vazio",
@@ -335,6 +339,19 @@ class _CarrinhoState extends State<Carrinho> {
                                           color: Colors.red
                                         ),
                                       ),
+                                      FlatButton(
+                                        child: Text("Continuar comprando",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, '/pecas');
+                                        },
+                                      )
+
                                     ],
                                   );
                               }
