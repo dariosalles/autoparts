@@ -16,12 +16,6 @@ class _CarrinhoState extends State<Carrinho> {
 
   NumberFormat formatter = NumberFormat("00.00");
 
-//  initState() {
-//
-//    //getTotal();
-//
-//  }
-
   String email;
 
   //TOKEN
@@ -106,50 +100,57 @@ class _CarrinhoState extends State<Carrinho> {
 
 
   // AUMENTA QUANTIDADE DO PRODUTO
-  aumentaQtde(idcarrinho,valor) async {
+  aumentaQtde(idcarrinho,valor,qtde) async {
 
-    // String apiAddCart
-    String apiaumentaQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiAumenta_qtde.php?token=$_token';
+    if(qtde==10.0) {
 
-    String _idcarrinho = idcarrinho.toString();
-    String _valor = valor.toString();
-
-    http.Response response;
-
-    Map<dynamic, dynamic> _corpo = {
-      'id_carrinho': _idcarrinho,
-      'valor': _valor
-    };
+      mensagemToast('Quantidade máxima já atingida');
 
 
-    response = await http.post(apiaumentaQtde, body: _corpo);
-
-    //print(response.body);
-
-
-    if (response.statusCode == 200) {
-      String _resultaumentaQtde = response.body;
-
-
-      print('Resultado: $_resultaumentaQtde');
-
-
-      if (_resultaumentaQtde.isEmpty) {
-        print('Erro ao aumentar a quantidade do produto. Tente novamente');
-        mensagemToast('Erro ao aumentar a quantidade do produto. Tente novamente');
-      } else {
-
-        //getTotal();
-
-        print('Quantidade aumentada com sucesso');
-        mensagemToast('Quantidade aumentada com sucesso');
-        Navigator.pushNamed(context, '/carrinho');
-
-      }
     } else {
-      print('Erro 500');
-    }
 
+      // String apiAumentaQtde
+      String apiaumentaQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiAumenta_qtde.php';
+
+      String _idcarrinho = idcarrinho.toString();
+      String _valor = valor.toString();
+
+      http.Response response;
+
+      Map<dynamic, dynamic> _corpo = {
+        'id_carrinho': _idcarrinho,
+        'valor': _valor,
+        'qtde': qtde,
+        'token': _token.toString()
+      };
+
+
+      response = await http.post(apiaumentaQtde, body: _corpo);
+
+
+      if (response.statusCode == 200) {
+        String _resultaumentaQtde = response.body;
+
+
+        print('Resultado: $_resultaumentaQtde');
+
+
+        if (_resultaumentaQtde.isEmpty) {
+          //print('Erro ao aumentar a quantidade do produto. Tente novamente');
+          mensagemToast('Erro ao aumentar a quantidade do produto. Tente novamente');
+        } else {
+
+          //print('Quantidade aumentada com sucesso');
+          mensagemToast('Quantidade aumentada com sucesso');
+          Navigator.pushNamed(context, '/carrinho');
+
+        }
+      } else {
+        print('Erro 500');
+      }
+
+
+    }
 
 
   }
@@ -157,59 +158,63 @@ class _CarrinhoState extends State<Carrinho> {
   // DIMINUI QUANTIDADE DO PRODUTO
   diminuiQtde(idcarrinho,valor,qtde) async {
 
-    // String apiAddCart
-    String apidiminuiQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiDiminui_qtde.php?token=$_token';
-
-    String _idcarrinho = idcarrinho.toString();
-    String _valor = valor.toString();
-    String _qtde = qtde.toString();
-
-    http.Response response;
-
-    Map<dynamic, dynamic> _corpo = {
-      'id_carrinho': _idcarrinho,
-      'valor': _valor,
-      'qtde': _qtde
-    };
+    //print(qtde);
 
 
-    response = await http.post(apidiminuiQtde, body: _corpo);
+    if(qtde==1.0) {
 
-    print(response.body);
-
-
-    if (response.statusCode == 200) {
-      String _resultdiminuiQtde = response.body;
+      mensagemToast('Quantidade mínima já atingida');
 
 
-      print('Resultado: $_resultdiminuiQtde');
+    } else {
 
-      if (_resultdiminuiQtde.isEmpty) {
-        print('Erro ao diminuir a quantidade do produto. Tente novamente');
-        mensagemToast('Erro ao diminuir a quantidade do produto. Tente novamente');
+      // String apiDiminuiQtde
+      String apidiminuiQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiDiminui_qtde.php';
 
-      } else {
-        //getTotal();
+      String _idcarrinho = idcarrinho.toString();
+      String _valor = valor.toString();
+      String _qtde = qtde.toString();
 
-        if(_resultdiminuiQtde=='qtdeminima') {
+      http.Response response;
 
-          print('Quantidade mínima já atingida');
-          mensagemToast('Quantidade mínima já atingida');
+      Map<dynamic, dynamic> _corpo = {
+        'id_carrinho': _idcarrinho,
+        'valor': _valor,
+        'token': _token.toString()
+      };
+
+
+      response = await http.post(apidiminuiQtde, body: _corpo);
+
+      //print(response.body);
+
+
+      if (response.statusCode == 200) {
+
+        String _resultdiminuiQtde = response.body;
+
+
+        //print('Resultado: $_resultdiminuiQtde');
+
+        if (_resultdiminuiQtde.isEmpty) {
+          //print('Erro ao diminuir a quantidade do produto. Tente novamente');
+          mensagemToast('Erro ao diminuir a quantidade do produto. Tente novamente');
 
         } else {
 
-          print('Quantidade diminuida com sucesso');
+          //print('Quantidade diminuida com sucesso');
           mensagemToast('Quantidade diminuida com sucesso');
           Navigator.pushNamed(context, '/carrinho');
 
         }
 
+      } else {
+
+        print('Erro 500');
+
       }
-    } else {
-      print('Erro 500');
+
     }
-
-
 
   }
 
@@ -220,7 +225,7 @@ class _CarrinhoState extends State<Carrinho> {
 
 
     // String apiAddCart
-    String apiremoveCart = 'http://www.dsxweb.com/apps/autoparts/api/apiRemove_carrinho.php?token=$_token';
+    String apiremoveCart = 'http://www.dsxweb.com/apps/autoparts/api/apiRemove_carrinho.php';
 
     print(apiremoveCart);
 
@@ -235,7 +240,9 @@ class _CarrinhoState extends State<Carrinho> {
     Map<dynamic, dynamic> _corpo = {
       'id_usuario': _idusuario,
       'email': _email,
-      'id_peca': _idpeca
+      'id_peca': _idpeca,
+      'token': _token.toString()
+
     };
 
     print('Map Corpo $_corpo');
@@ -380,7 +387,7 @@ class _CarrinhoState extends State<Carrinho> {
                                                     double valorpeca = valorp / quantp;
                                                     print(valorpeca);
 
-                                                    aumentaQtde(snapshot.data[indice]['id_carrinho'].toString(),valorpeca);
+                                                    aumentaQtde(snapshot.data[indice]['id_carrinho'].toString(),valorpeca,quantp);
                                                   },
                                                 ),
 
