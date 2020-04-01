@@ -333,20 +333,15 @@ class _PecasState extends State<Pecas>  {
                                           height: 20,
                                           thickness: 2,
                                         )
-
                                       ],
                                     ),
-
                                   );
                                 });
-
                           }
                           break;
+
                         case ConnectionState.waiting :
 
-                        //runLoading();
-
-                        //_loading ?
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,

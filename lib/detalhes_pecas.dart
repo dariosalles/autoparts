@@ -472,6 +472,11 @@ class _DetalhesState extends State<Detalhes> {
 
 }
 
+  goCarrinho(){
+
+    Navigator.pushNamed(context, '/carrinho');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -480,6 +485,19 @@ class _DetalhesState extends State<Detalhes> {
 
           title: Text('Detalhes'),
           backgroundColor: Color.fromARGB(255, 204, 37, 1),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.shopping_cart,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: () async {
+                goCarrinho();
+                //Navigator.pushNamed(context, '/pecas');
+              },
+            ),
+          ],
         ),
         //drawer: MenuDrawer(),
         floatingActionButton: _floatingActionButton(),

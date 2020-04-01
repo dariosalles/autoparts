@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:auto_parts/menuDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Carrinho extends StatefulWidget {
@@ -13,11 +14,19 @@ class Carrinho extends StatefulWidget {
 
 class _CarrinhoState extends State<Carrinho> {
 
+  NumberFormat formatter = NumberFormat("00.00");
+
+//  initState() {
+//
+//    //getTotal();
+//
+//  }
+
   String email;
 
   //TOKEN
   int _token = 123456789;
-
+  int quant = 0;
   List _itemsC = [];
   String _apiC;
   //double total;
@@ -30,7 +39,7 @@ class _CarrinhoState extends State<Carrinho> {
 
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.CENTER,
         timeInSecForIos: 3,
         backgroundColor: Color.fromARGB(255, 214, 37, 1),
         textColor: Colors.white,
@@ -58,87 +67,43 @@ class _CarrinhoState extends State<Carrinho> {
 
 
     _itemsC = json.decode(response.body) as List;
-      //print(_items);
 
+    //NumberFormat formatter = NumberFormat("00.00");
+    double total = 0;
+    for(int i=0;i<_itemsC.length;i++) {
+      total += double.parse(_itemsC[i]['valor']);
+      //print('Total ' + total.toString());
+    }
 
-//    NumberFormat formatter = NumberFormat("00.00");
-//    double total = 0;
-//    for(int i=0;i<_itemsC.length;i++) {
-//      total += double.parse(_itemsC[i]['valor']);
-//      //print('Total ' + total.toString());
-//    }
-//
-//      totalg = formatter.format(total.toString());
-//      print(totalg);
+    //setState(() {
+      totalg = total.toString();
+    //});
+
+      //print(totalg);
 
     //getTotal();
 
     return _itemsC;
 
+  }
 
+
+  getTotal() {
+
+    //NumberFormat formatter = NumberFormat("00.00");
+    double total = 0;
+    for(int i=0;i<_itemsC.length;i++) {
+      total += double.parse(_itemsC[i]['valor']);
+    }
+
+      //setState(() {
+        totalg = total.toString();
+      //});
+      return totalg;
+      //print('Total: ' + totalg);
 
   }
 
-//  // CARREGA AS PEÇAS INICIAIS
-//  _inicialCarrinho() async {
-//
-//    // shared
-//    SharedPreferences sp = await SharedPreferences.getInstance();
-//
-//    email = sp.getString('email');
-//
-//    //print(email);
-//
-//    _apiC = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_carrinho.php?token=$_token';
-//
-//    //print(_apiC);
-//
-//    http.Response response;
-//
-//    response = await http.post(_apiC, body: {'email': email});
-//    //response = await http.get(_apiC);
-//
-//    //print(response.body);
-//
-//    if(response.statusCode==200) {
-//
-//      setState(() {
-//        _itemsC = json.decode(response.body) as List;
-//        //print(_items);
-//      });
-//
-//      setState(() {
-//        _quantC = _itemsC.length;
-//        //print(quant);
-//      });
-//
-//
-//
-//    } else {
-//
-//      print("Erro no servidor - 500");
-//    }
-//
-//  }
-  // GET TOTAL
-//  Future<String> _getTotal() async {
-//
-//    NumberFormat formatter = NumberFormat("00.00");
-//    //double initialValue = num.parse(0.18941.toStringAsPrecision(2));
-//    //double value = 0.19;
-//
-//    //print(formatter.format(initialValue));
-//    //print(formatter.format(value));
-//
-//    double total = 0;
-//    for(int i=0;i<_itemsC.length;i++) {
-//      total += double.parse(_itemsC[i]['valor']);
-//     //print('Total ' + total.toString());
-//    }
-//    //print(total);
-//    return formatter.format(total).toString();
-//
-//  }
 
   // AUMENTA QUANTIDADE DO PRODUTO
   aumentaQtde(idcarrinho,valor) async {
@@ -159,7 +124,7 @@ class _CarrinhoState extends State<Carrinho> {
 
     response = await http.post(apiaumentaQtde, body: _corpo);
 
-    print(response.body);
+    //print(response.body);
 
 
     if (response.statusCode == 200) {
@@ -173,6 +138,9 @@ class _CarrinhoState extends State<Carrinho> {
         print('Erro ao aumentar a quantidade do produto. Tente novamente');
         mensagemToast('Erro ao aumentar a quantidade do produto. Tente novamente');
       } else {
+
+        //getTotal();
+
         print('Quantidade aumentada com sucesso');
         mensagemToast('Quantidade aumentada com sucesso');
         Navigator.pushNamed(context, '/carrinho');
@@ -187,19 +155,21 @@ class _CarrinhoState extends State<Carrinho> {
   }
 
   // DIMINUI QUANTIDADE DO PRODUTO
-  diminuiQtde(idcarrinho,valor) async {
+  diminuiQtde(idcarrinho,valor,qtde) async {
 
     // String apiAddCart
     String apidiminuiQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiDiminui_qtde.php?token=$_token';
 
     String _idcarrinho = idcarrinho.toString();
     String _valor = valor.toString();
+    String _qtde = qtde.toString();
 
     http.Response response;
 
     Map<dynamic, dynamic> _corpo = {
       'id_carrinho': _idcarrinho,
-      'valor': _valor
+      'valor': _valor,
+      'qtde': _qtde
     };
 
 
@@ -214,14 +184,25 @@ class _CarrinhoState extends State<Carrinho> {
 
       print('Resultado: $_resultdiminuiQtde');
 
-
       if (_resultdiminuiQtde.isEmpty) {
         print('Erro ao diminuir a quantidade do produto. Tente novamente');
         mensagemToast('Erro ao diminuir a quantidade do produto. Tente novamente');
+
       } else {
-        print('Quantidade diminuida com sucesso');
-        mensagemToast('Quantidade diminuida com sucesso');
-        Navigator.pushNamed(context, '/carrinho');
+        //getTotal();
+
+        if(_resultdiminuiQtde=='qtdeminima') {
+
+          print('Quantidade mínima já atingida');
+          mensagemToast('Quantidade mínima já atingida');
+
+        } else {
+
+          print('Quantidade diminuida com sucesso');
+          mensagemToast('Quantidade diminuida com sucesso');
+          Navigator.pushNamed(context, '/carrinho');
+
+        }
 
       }
     } else {
@@ -289,10 +270,8 @@ class _CarrinhoState extends State<Carrinho> {
   Widget build(BuildContext context) {
 
 
-
     return Scaffold(
         appBar: AppBar(
-
           title: Text('Carrinho'),
           backgroundColor: Color.fromARGB(255, 204, 37, 1),
         ),
@@ -316,33 +295,46 @@ class _CarrinhoState extends State<Carrinho> {
                     builder: (context, snapshot){
 
                       String resultado;
-                      //bool _loading = false;
 
                       switch(snapshot.connectionState) {
+
+                        //DONE
                         case ConnectionState.done :
-                        //print('conexao none');
+                          //print("done");
+
                           if (snapshot.hasError){
 
                             resultado = "Erro ao carregar os dados";
                             //print(snapshot.hasError);
-                            print(snapshot.error);
+                            //print(snapshot.error);
 
                           } else {
 
+                            if(snapshot.data.length==0) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.remove_shopping_cart),
+                                        color: Colors.green,
+                                        iconSize: 25,
+                                        tooltip: 'Carrinho Free',
 
+                                      ),
+                                      Text("Carrinho vazio",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25,
+                                          color: Colors.red
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                              }
 
-                            return ListView.builder(
+                              return ListView.builder(
                                 itemCount: snapshot.data.length,
                                 itemBuilder: (context, indice){
-
-
-
-                                      //double total = 100;
-
-                                    //total += snapshot.data[indice]['valor'];
-                                    //print(total);
-
-
 
                                   return ListTile(
 
@@ -412,7 +404,7 @@ class _CarrinhoState extends State<Carrinho> {
                                                     double valorpeca = valorp / quantp;
                                                     print(valorpeca);
 
-                                                    diminuiQtde(snapshot.data[indice]['id_carrinho'].toString(),valorpeca);
+                                                    diminuiQtde(snapshot.data[indice]['id_carrinho'].toString(),valorpeca,quantp);
                                                   },
                                                 ),
 
@@ -485,11 +477,10 @@ class _CarrinhoState extends State<Carrinho> {
 
                           }
                           break;
+
+                      //WAITING
                         case ConnectionState.waiting :
 
-                        //runLoading();
-
-                        //_loading ?
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -510,11 +501,13 @@ class _CarrinhoState extends State<Carrinho> {
                           );
                           break;
 
+                      //ACTIVE
                         case ConnectionState.active :
                         //print('conexao active');
                           break;
-                        case ConnectionState.none :
-                        //print('conexao none');
+                      //NONE
+                          case ConnectionState.none :
+                          print('conexao none');
                           break;
                       }
                       return Center(
@@ -536,7 +529,7 @@ class _CarrinhoState extends State<Carrinho> {
                       padding: EdgeInsets.only(bottom: 10, top: 10),
                       child: Row(
                         children: <Widget>[
-                          Text("Total:  " ,
+                          Text("Total:" + getTotal(),
                             style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.bold,
