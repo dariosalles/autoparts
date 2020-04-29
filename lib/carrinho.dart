@@ -1,3 +1,4 @@
+import 'package:auto_parts/utils/app_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -18,8 +19,6 @@ class _CarrinhoState extends State<Carrinho> {
 
   String email;
 
-  //TOKEN
-  int _token = 123456789;
   int quant = 0;
   List _itemsC = [];
   String _apiC;
@@ -50,7 +49,7 @@ class _CarrinhoState extends State<Carrinho> {
 
     //print(email);
 
-    _apiC = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_carrinho.php?token=$_token';
+    _apiC = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_carrinho.php?token=${Constants.token}';
 
     //print(_apiC);
 
@@ -120,7 +119,7 @@ class _CarrinhoState extends State<Carrinho> {
         'id_carrinho': _idcarrinho,
         'valor': _valor,
         'qtde': qtde.toString(),
-        'token': _token.toString()
+        'token': Constants.token.toString()
       };
 
 
@@ -179,7 +178,7 @@ class _CarrinhoState extends State<Carrinho> {
       Map<dynamic, dynamic> _corpo = {
         'id_carrinho': _idcarrinho,
         'valor': _valor,
-        'token': _token.toString()
+        'token': Constants.token.toString()
       };
 
 
@@ -240,7 +239,7 @@ class _CarrinhoState extends State<Carrinho> {
       'id_usuario': _idusuario,
       'email': _email,
       'id_peca': _idpeca,
-      'token': _token.toString()
+      'token': Constants.token.toString()
 
     };
 

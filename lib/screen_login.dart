@@ -1,4 +1,5 @@
 import 'package:auto_parts/pecas.dart';
+import 'package:auto_parts/utils/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,7 +36,6 @@ class _SignInOneState extends State<SignInOne> {
 
 
   List _result = [];
-  int token = 123456789;
 
   bool _obscureText = true;
 
@@ -159,22 +159,13 @@ class _SignInOneState extends State<SignInOne> {
     } else {
 
       // String apiAcesso_get = 'http://www.dsxweb.com/apps/autoparts/api/usuario.php?token=$token' + '&email=' + email + '&senha=' + senha;
-      String apiAcesso = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_usuario.php?token=$token';
+      String apiAcesso = '${Constants.baseUrlApi}apiRecupera_usuario.php';
 
       print(apiAcesso);
 
       http.Response response;
 
-      //response = await http.get(apiAcesso);
-
-      response = await http.post(apiAcesso, body: {'email': email, 'senha': senha });
-
-//    var headers = response.headers;
-//
-      //print(response.body);
-
-
-
+      response = await http.post(apiAcesso, body: {'email': email, 'senha': senha, 'token': Constants.token.toString()});
 
       if (response.statusCode == 200) {
 
@@ -182,7 +173,6 @@ class _SignInOneState extends State<SignInOne> {
           _result = json.decode(response.body) as List;
         });
 
-        //print('Resultado:' + _result.toString());
 
         if(_result.isEmpty) {
 
@@ -211,19 +201,8 @@ class _SignInOneState extends State<SignInOne> {
                 sp.setBool('lembrarme', rememberMe);
               }
 
-//              setState(() {
-//                email = sp.getString('email');
-//              });
-
-              //print('Email sp antes $email');
-
-               //NAVEGA PRA PROXIMA PAGINA COM BOTAO VOLTAR
-              //Navigator.pushNamed(context, '/pecas');
-
               // NAVEGA SEM DEIXAR BOTAO VOLTAR
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext) => Pecas()));
-
-
 
         }
 

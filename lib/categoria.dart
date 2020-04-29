@@ -5,6 +5,7 @@ import 'menuDrawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_parts/include_categorias.dart';
+import 'package:auto_parts/utils/app_config.dart';
 
 class Categoria extends StatefulWidget {
   @override
@@ -12,9 +13,6 @@ class Categoria extends StatefulWidget {
 }
 
 class _CategoriaState extends State<Categoria>  {
-
-  //TOKEN
-  int _token = 123456789;
 
   List _itemsCat = [];
 
@@ -54,19 +52,19 @@ class _CategoriaState extends State<Categoria>  {
     if(_buscaCategoria.isEmpty) {
 
       //setState(() {
-        urlcat = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php";
+        urlcat = "${Constants.baseUrlApi}apiRecupera_categoria.php";
 
       //});
 
-      //print(urlcat);
+      print(urlcat);
 
     } else {
 
         //setState(() {
-          urlcat = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_categoria.php?busca=$_buscaCategoria';
+          urlcat = '${Constants.baseUrlApi}api/apiRecupera_categoria.php?busca=$_buscaCategoria';
         //});
 
-        //print(urlcat);
+        print(urlcat);
     }
 
     //print(urlcat);
@@ -76,7 +74,7 @@ class _CategoriaState extends State<Categoria>  {
 
     http.Response response;
 
-    response = await http.post(urlcat, body: {'token': _token.toString(), 'id_categoria': id_categoria });
+    response = await http.post(urlcat, body: {'token': Constants.token.toString(), 'id_categoria': id_categoria });
 
     _itemsCat = json.decode(response.body) as List;
 
@@ -94,7 +92,7 @@ class _CategoriaState extends State<Categoria>  {
 
 
     // String apiAddCart
-    String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=$_token';
+    String apiAddCart = '${Constants.baseUrlApi}apiInsereCarrinho8.php?token=${Constants.token}';
 
     //print(apiAddCart);
 

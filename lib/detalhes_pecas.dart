@@ -7,17 +7,20 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'themes/light_color.dart';
 
-//import 'package:auto_parts/pecas.dart';
 
 
 class Detalhes extends StatefulWidget {
+
+  Detalhes({ Key key, @required this.idpecadetalhes}) : super(key: key);
+  final String idpecadetalhes;
+
   @override
   _DetalhesState createState() => _DetalhesState();
 }
 
 class _DetalhesState extends State<Detalhes> {
 
-  String idpecadetalhes;
+  String get idpecadetalhes => widget.idpecadetalhes;
   String imagem;
   String nome;
   double valor;
@@ -31,6 +34,8 @@ class _DetalhesState extends State<Detalhes> {
   List _itemsD = [];
   //int _quantD = 0;
   String _apiDetalhes;
+
+
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -48,42 +53,10 @@ class _DetalhesState extends State<Detalhes> {
 
   }
 
-//  AnimationController controller;
-//  Animation<double> animation;
-// @override
-//  void initState() {
-//    super.initState();
-//
-////    controller =
-////        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-////    animation = Tween<double>(begin: 0, end: 1).animate(
-////        CurvedAnimation(parent: controller, curve: Curves.easeInToLinear));
-////    controller.forward();
-//
-//    //_recuperaIdPeca();
-//    //inicialDetalhes(idpecadetalhes);
-//
-//  }
-
-//  _recuperaIdPeca() async {
-//
-//    SharedPreferences sp = await SharedPreferences.getInstance();
-//    String idpecadetalhes = sp.getString('idpeca');
-//
-//    print('Detalhes - ID PECA: $idpecadetalhes');
-//
-//    //inicialDetalhes(idpecadetalhes);
-//  }
-
-
 
 
   // CARREGA OS DADOS - DETALHES DAS PEÇAS
   Future<List> _recuperarDadosPecas() async {
-
-    SharedPreferences sp = await SharedPreferences.getInstance();
-
-    idpecadetalhes = sp.getString('idpeca');
 
     _apiDetalhes =
     'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas_detalhes.php?token=$_token&id_peca=$idpecadetalhes';
@@ -164,50 +137,6 @@ class _DetalhesState extends State<Detalhes> {
 
 
   }
-//
-//  // GET TOTAL
-//  getValor() {
-//
-//    NumberFormat formatter = NumberFormat("00.00");
-//
-//
-//    double total = 0;
-//
-//    total = double.parse(_itemsD[0]['valor']);
-//
-//
-//    //print('Total ' + total.toString());
-//
-//    return formatter.format(total);
-//
-//  }
-
-//  Widget _detalhesImage() {
-//
-//    return AnimatedBuilder(
-//      builder: (context, child) {
-//        return AnimatedOpacity(
-//          duration: Duration(milliseconds: 500),
-//          opacity: animation.value,
-//          child: child,
-//        );
-//      },
-//      animation: animation,
-//      child: Stack(
-//        alignment: Alignment.center,
-//        children: <Widget>[
-//          TitleText(
-//            text: "Auto Parts",
-//            fontSize: 100,
-//            color: Colors.red,
-//          ),
-//          //Image.asset('assets/img/pecas/' + _itemsD[0]['imagem'].toString())
-//          Image.asset('assets/img/pecas/$imagem')
-//        ],
-//      ),
-//    );
-//
-//  }
   Widget _colorWidget(Color color, {bool isSelected = false}) {
     return CircleAvatar(
       radius: 12,
@@ -221,208 +150,6 @@ class _DetalhesState extends State<Detalhes> {
           : CircleAvatar(radius: 7, backgroundColor: color,)
     );
   }
-
-//  Widget _dimensoes() {
-//    return Column(
-//      crossAxisAlignment: CrossAxisAlignment.start,
-//      children: <Widget>[
-//        Row(
-//          children: <Widget>[
-//            Row(
-//              mainAxisAlignment: MainAxisAlignment.center,
-//              children: <Widget>[
-//                _colorWidget(LightColor.black, isSelected: true),
-//                SizedBox(
-//                  width: 10,
-//                ),
-//                Text('Dados do produto na embalagem',
-//                style: TextStyle(
-//                    fontWeight: FontWeight.bold,
-//                    fontSize: 20
-//                ),
-//                )
-//              ],
-//            )
-//
-//          ],
-//        ),
-//        SizedBox(height: 20),
-//        TitleText(
-//          text: "Dimensões",
-//          fontSize: 18,
-//        ),
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.start,
-//          children: <Widget>[
-//            SizedBox(
-//              height: 15,
-//            ),
-//            _colorWidget(LightColor.red, isSelected: true),
-//          SizedBox(
-//            width: 15,
-//          ),
-//            //_colorWidget(LightColor.lightBlue),
-//          Text(dimensoes  ?? '',
-//          style: TextStyle(
-//            fontWeight: FontWeight.bold,
-//            fontSize: 16
-//          ),
-//          )
-//          ],
-//        ),
-//        SizedBox(
-//          height: 15,
-//        ),
-//        TitleText(
-//          text: "Peso",
-//          fontSize: 18,
-//        ),
-//        //SizedBox(height: 20),
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.start,
-//          children: <Widget>[
-//            _colorWidget(LightColor.red, isSelected: true),
-//            SizedBox(
-//              width: 15,
-//            ),
-//            //_colorWidget(LightColor.lightBlue),
-//            Text('$peso grama(s)' ?? '',
-//              style: TextStyle(
-//                  fontWeight: FontWeight.bold,
-//                  fontSize: 16
-//              ),
-//            )
-//          ],
-//        ),
-//        SizedBox(
-//          height: 15,
-//        ),
-//        TitleText(
-//          text: "Garantia",
-//          fontSize: 18,
-//        ),
-//        //SizedBox(height: 20),
-//        Row(
-//          mainAxisAlignment: MainAxisAlignment.start,
-//          children: <Widget>[
-//            _colorWidget(LightColor.red, isSelected: true),
-//            SizedBox(
-//              width: 15,
-//            ),
-//            //_colorWidget(LightColor.lightBlue),
-//            Text(garantia ?? '',
-//              style: TextStyle(
-//                  fontWeight: FontWeight.bold,
-//                  fontSize: 16
-//              ),
-//            )
-//          ],
-//        )
-//      ],
-//    );
-//
-//  }
-
-//  Widget _detalhesWidget() {
-//
-//    return DraggableScrollableSheet(
-//        maxChildSize: .8,
-//        initialChildSize: .53,
-//        minChildSize: .53,
-//        builder: (context, scrollController) {
-//          return Container(
-//            padding: AppTheme.padding.copyWith(bottom: 0),
-//            //padding: EdgeInsets.only(bottom: 0),
-//            decoration: BoxDecoration(
-//                borderRadius: BorderRadius.only(
-//                  topLeft: Radius.circular(40),
-//                  topRight: Radius.circular(40),
-//                ),
-//                color: Colors.white),
-//            child: SingleChildScrollView(
-//              controller: scrollController,
-//              child: Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                mainAxisSize: MainAxisSize.max,
-//                children: <Widget>[
-//                  SizedBox(height: 5),
-//                  Container(
-//                    alignment: Alignment.center,
-//                    child: Container(
-//                      width: 50,
-//                      height: 5,
-//                      decoration: BoxDecoration(
-//                          color: LightColor.iconColor,
-//                          borderRadius: BorderRadius.all(Radius.circular(10))),
-//                    ),
-//                  ),
-//                  SizedBox(height: 10),
-//                  Container(
-//                    child: Row(
-//                      crossAxisAlignment: CrossAxisAlignment.start,
-//                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                      children: <Widget>[
-//                        TitleText(text: nome ?? '', fontSize: 25),
-//                        //TitleText(text: 'escapamento'.toUpperCase(), fontSize: 25),
-//                        Column(
-//                          crossAxisAlignment: CrossAxisAlignment.end,
-//                          children: <Widget>[
-//                            Row(
-//                              crossAxisAlignment: CrossAxisAlignment.center,
-//                              children: <Widget>[
-//                                TitleText(
-//                                  text: "R\$ ",
-//                                  fontSize: 18,
-//                                  color: LightColor.red,
-//                                ),
-//                                Text(valor.toString(),
-//                                    style: TextStyle(
-//                                      fontSize: 20,
-//                                      color: LightColor.red,
-//                                      fontWeight: FontWeight.bold
-//                                    ),
-//                                ),
-//                              ],
-//                            ),
-//                            Row(
-//                              children: <Widget>[
-//                                Icon(Icons.star,
-//                                    color: LightColor.red, size: 17),
-//                                Icon(Icons.star,
-//                                    color: LightColor.red, size: 17),
-//                                Icon(Icons.star,
-//                                    color: LightColor.red, size: 17),
-//                                Icon(Icons.star,
-//                                    color: LightColor.red, size: 17),
-//                                Icon(Icons.star,
-//                                    color: LightColor.red, size: 17),
-//                              ],
-//                            ),
-//                          ],
-//                        ),
-//                      ],
-//                    ),
-//                  ),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//                _dimensoes(),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//                //_availableColor(),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//                  //_description(),
-//                ],
-//              ),
-//            ),
-//          );
-//        },
-//      );
-//
-//  }
 
   FloatingActionButton _floatingActionButton() {
     return FloatingActionButton(
@@ -448,7 +175,7 @@ class _DetalhesState extends State<Detalhes> {
                     child: Text("Sim"),
                     onPressed: (){
                       print('sim');
-                      addCart(idpecadetalhes.toString(),nome,valor.toString());
+                      //addCart(this.idpecadetalhes,nome,valor.toString());
                       Navigator.pop(context);
                     },
                   ),

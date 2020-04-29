@@ -1,3 +1,4 @@
+import 'package:auto_parts/detalhes_pecas.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -5,6 +6,7 @@ import 'include_categorias.dart';
 import 'menuDrawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_parts/utils/app_config.dart';
 
 
 // PAGE PEÇAS
@@ -18,11 +20,16 @@ class _PecasState extends State<Pecas>  {
 
   String email;
   String url;
+  String _busca;
 
-  //TOKEN
-  int _token = 123456789;
 
   List _items = [];
+  List _itemsTemp = [];
+  String tipolista;
+
+  List _itemsbusca = [];
+  String _urlbusca;
+
 
   //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
   TextEditingController _controllerBusca = TextEditingController();
@@ -45,34 +52,76 @@ class _PecasState extends State<Pecas>  {
 
   Future<List> _recuperarPecas() async {
 
-    var _busca = _controllerBusca.text.trim();
-    //print(_busca);
+    String _busca = _controllerBusca.text.trim();
 
-    if(_busca.isEmpty) {
-      setState(() {
-        url = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php";
-      });
 
-    } else {
-      setState(() {
-        url = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas22.php?busca=$_busca';
-      });
+      if(_busca.isEmpty) {
 
-    }
+        // se itemsTempo estiver vazio
+        if(_itemsTemp.isEmpty || _itemsTemp == '[]') {
 
-    //print(url);
+          setState(() {
+            url = "${Constants.baseUrlApi}apiRecupera_pecas22.php";
+          });
 
-    //http.Response response = await http.get(url);
+          print(url);
 
-    http.Response response;
+          http.Response response;
 
-    response = await http.post(url, body: {'token': _token.toString()});
+          response = await http.post(url, body: {'token': Constants.token.toString()});
 
-    _items = json.decode(response.body) as List;
+          _items = json.decode(response.body) as List;
 
-    return _items;
+          // faz uma cópia de itens (offline)
+          setState(() {
+            _itemsTemp = _items;
+          });
+
+          setState(() {
+            tipolista = 'nao temporario';
+
+            //print(tipolista);
+          });
+
+          return _items;
+
+        } else {
+          setState(() {
+            tipolista = 'temporário';
+            //print(tipolista);
+          });
+
+          return _itemsTemp;
+
+        }
+
+        // busca preenchida
+      }else{
+
+        setState(() {
+          url = "${Constants.baseUrlApi}apiRecupera_pecas22.php?busca=$_busca";
+        });
+
+        //print(_busca);
+
+        http.Response response;
+
+        response = await http.post(url, body: {'token': Constants.token.toString()});
+
+        _itemsbusca = json.decode(response.body) as List;
+
+
+
+        return _itemsbusca;
+
+
+      }
+
+
+
 
   }
+
 
   // ADICIONA PRODUTO NO CARRINHO
   addCart(idpeca, nome, valor) async {
@@ -84,7 +133,7 @@ class _PecasState extends State<Pecas>  {
 
 
     // String apiAddCart
-    String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=$_token';
+    String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=${Constants.token}';
 
     //print(apiAddCart);
 
@@ -137,17 +186,29 @@ class _PecasState extends State<Pecas>  {
     Navigator.pushNamed(context, '/carrinho');
   }
 
-  goDetalhes(idpeca) async{
+  goDetalhes(idpeca) {
 
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString('idpeca', idpeca);
+    String id = idpeca.toString();
 
-    idpeca = sp.getString('idpeca');
-
-    print('ID PECA: $idpeca');
-
-    Navigator.pushNamed(context, '/detalhes');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          //fullscreenDialog: true,
+          builder: (context) => Detalhes(idpecadetalhes: id),
+        ));
   }
+
+//  goDetalhes(idpeca) async{
+//
+//    SharedPreferences sp = await SharedPreferences.getInstance();
+//    sp.setString('idpeca', idpeca);
+//
+//    idpeca = sp.getString('idpeca');
+//
+//    print('ID PECA: $idpeca');
+//
+//    Navigator.pushNamed(context, '/detalhes');
+//  }
 
 
   @override
@@ -212,7 +273,6 @@ class _PecasState extends State<Pecas>  {
                         color: Colors.red,
                         textColor: Colors.white,
                         onPressed: (){
-                          //_buscaPecas();
                           _recuperarPecas();
                         },
                       ),
