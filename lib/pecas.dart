@@ -20,15 +20,10 @@ class _PecasState extends State<Pecas>  {
 
   String email;
   String url;
-  String _busca;
-
-
   List _items = [];
   List _itemsTemp = [];
   String tipolista;
-
   List _itemsbusca = [];
-  String _urlbusca;
 
 
   //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
@@ -133,7 +128,7 @@ class _PecasState extends State<Pecas>  {
 
 
     // String apiAddCart
-    String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=${Constants.token}';
+    String apiAddCart = '${Constants.baseUrlApi}apiInsereCarrinho8.php';
 
     //print(apiAddCart);
 
@@ -147,7 +142,7 @@ class _PecasState extends State<Pecas>  {
     String _quant = '1';
     String _valor = valor;
 
-    Map<dynamic, dynamic> _corpo = {'id_usuario': _idusuario, 'email': _email, 'id_peca': _idpeca, 'peca': _peca, 'quant': _quant, 'valor': _valor };
+    Map<dynamic, dynamic> _corpo = {'token': Constants.token.toString(), 'id_usuario': _idusuario, 'email': _email, 'id_peca': _idpeca, 'peca': _peca, 'quant': _quant, 'valor': _valor };
 
     print('Map Corpo $_corpo');
 
@@ -190,6 +185,7 @@ class _PecasState extends State<Pecas>  {
 
     String id = idpeca.toString();
 
+    // passando pra outra tela utilizando parametros
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -197,18 +193,6 @@ class _PecasState extends State<Pecas>  {
           builder: (context) => Detalhes(idpecadetalhes: id),
         ));
   }
-
-//  goDetalhes(idpeca) async{
-//
-//    SharedPreferences sp = await SharedPreferences.getInstance();
-//    sp.setString('idpeca', idpeca);
-//
-//    idpeca = sp.getString('idpeca');
-//
-//    print('ID PECA: $idpeca');
-//
-//    Navigator.pushNamed(context, '/detalhes');
-//  }
 
 
   @override

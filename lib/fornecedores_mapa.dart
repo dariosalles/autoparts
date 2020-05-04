@@ -13,6 +13,11 @@ import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FornecedorMapa extends StatefulWidget {
+
+  FornecedorMapa({ Key key, @required this.lat, this.long}) : super(key: key);
+  final String lat;
+  final String long;
+
   @override
   _FornecedorMapaState createState() => _FornecedorMapaState();
 }

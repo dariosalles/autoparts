@@ -1,4 +1,6 @@
+import 'package:auto_parts/fornecedores_mapa.dart';
 import 'package:auto_parts/themes/light_color.dart';
+import 'package:auto_parts/utils/app_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,6 +10,10 @@ import 'widgets/title_text.dart';
 import 'themes/light_color.dart';
 
 class DetalhesFornecedores extends StatefulWidget {
+
+  DetalhesFornecedores({ Key key, @required this.idfdetalhes}) : super(key: key);
+  final String idfdetalhes;
+
   @override
   _DetalhesFornecedoresState createState() => _DetalhesFornecedoresState();
 }
@@ -28,38 +34,9 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
   String descricao;
   String imagem;
   String site;
-//TOKEN
-  int _token = 123456789;
 
   List _itemsDF = [];
-  //int _quantD = 0;
   String _apiDetalhesF;
-
-//  AnimationController controller;
-//  Animation<double> animation;
-
-//  @override
-//  void initState() {
-//    super.initState();
-////
-////    controller =
-////        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-////    animation = Tween<double>(begin: 0, end: 1).animate(
-////        CurvedAnimation(parent: controller, curve: Curves.easeInToLinear));
-////    controller.forward();
-//
-//    //_recuperaIdFornecedor();
-//
-//
-//  }
-
-//  _recuperaIdFornecedor() async {
-//
-//
-//    //return idforndetalhes;
-//
-//    //inicialDetalhesF(idforndetalhes);
-//  }
 
   // CARREGA OS DADOS - DETALHES DO FORNECEDOR
   Future<List> _recuperarDadosFornecedores() async {
@@ -69,14 +46,13 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
 
     //print('Detalhes - ID Fornecedor: $idforndetalhes');
 
-    _apiDetalhesF =
-    'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedor_detalhes.php?token=$_token&id_fornecedor=$idforndetalhes';
+    _apiDetalhesF = '${Constants.baseUrlApi}apiRecupera_fornecedor_detalhes.php';
 
     //print(_apiDetalhesF);
 
     http.Response response;
 
-    response = await http.get(_apiDetalhesF);
+    response = await http.post(_apiDetalhesF, body: ({"token": Constants.token.toString(), "id_fornecedor": idforndetalhes}));
 
     _itemsDF = json.decode(response.body) as List;
     //print(_itemsDF);
@@ -107,40 +83,20 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
 
   goMapa(double latitude, double longitude) async {
 
-    //guarda email
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setDouble('latitude', latitude);
-    sp.setDouble('longitude', longitude);
+    String lat = latitude.toString();
+    String long = longitude.toString();
 
-    Navigator.pushNamed(context, '/fornecedormapa');
+    // passando pra outra tela utilizando parametros
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          //fullscreenDialog: true,
+          builder: (context) => FornecedorMapa(lat: lat, long: long ),
+        ));
+
   }
 
-//  Widget _detalhesFImage() {
-//
-//    return AnimatedBuilder(
-//      builder: (context, child) {
-//        return AnimatedOpacity(
-//          duration: Duration(milliseconds: 500),
-//          opacity: animation.value,
-//          child: child,
-//        );
-//      },
-//      animation: animation,
-//      child: Stack(
-//        alignment: Alignment.center,
-//        children: <Widget>[
-//          TitleText(
-//            text: "Auto Parts",
-//            fontSize: 100,
-//            color: Colors.transparent,
-//          ),
-//          //Image.asset('assets/img/pecas/' + _itemsD[0]['imagem'].toString())
-//          Image.asset('assets/img/fornecedores/$imagem')
-//        ],
-//      ),
-//    );
-//
-//  }
+
   Widget _colorWidget(Color color, {bool isSelected = false}) {
     return CircleAvatar(
         radius: 12,
@@ -154,299 +110,6 @@ class _DetalhesFornecedoresState extends State<DetalhesFornecedores>
             : CircleAvatar(radius: 7, backgroundColor: color,)
     );
   }
-
-//  Widget _dadosFornecedores() {
-//
-//    return FutureBuilder(
-//        future: _recuperarDadosFornecedores(),
-//        builder: (context, snapshot) {
-//
-//          String resultado;
-//
-//          switch(snapshot.connectionState) {
-//            case ConnectionState.done :
-//
-//              if (snapshot.hasError){
-//
-//                resultado = "Erro ao carregar os dados";
-//                //print(snapshot.hasError);
-//                print(snapshot.error);
-//
-//              } else {
-//
-//                return Column(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  children: <Widget>[
-//                    Row(
-//                      children: <Widget>[
-//                        Row(
-//                          mainAxisAlignment: MainAxisAlignment.center,
-//                          children: <Widget>[
-//                            _colorWidget(LightColor.black, isSelected: true),
-//                            SizedBox(
-//                              width: 10,
-//                            ),
-//                            Text('Dados do Fornecedor',
-//                              style: TextStyle(
-//                                  fontWeight: FontWeight.bold,
-//                                  fontSize: 20
-//                              ),
-//                            )
-//                          ],
-//                        )
-//
-//                      ],
-//                    ),
-//                    SizedBox(height: 20),
-//                    TitleText(
-//                      text: "Endereço",
-//                      fontSize: 18,
-//                    ),
-//                    Row(
-//                      mainAxisAlignment: MainAxisAlignment.start,
-//                      children: <Widget>[
-//                        SizedBox(
-//                          height: 15,
-//                        ),
-//                        _colorWidget(LightColor.red, isSelected: true),
-//                        SizedBox(
-//                          width: 15,
-//                        ),
-//                        //_colorWidget(LightColor.lightBlue),
-//                        Text(snapshot.data[0]['endereco'] ?? '',
-//                          style: TextStyle(
-//                              fontWeight: FontWeight.bold,
-//                              fontSize: 16
-//                          ),
-//                        )
-//                      ],
-//                    ),
-//                    Text(snapshot.data[0]['bairro'] ?? '',
-//                      style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          fontSize: 16
-//                      ),
-//                    ),
-//                    SizedBox(
-//                      height: 15,
-//                    ),
-//                    TitleText(
-//                      text: "Cidade",
-//                      fontSize: 18,
-//                    ),
-//                    //SizedBox(height: 20),
-//                    Row(
-//                      mainAxisAlignment: MainAxisAlignment.start,
-//                      children: <Widget>[
-//                        _colorWidget(LightColor.red, isSelected: true),
-//                        SizedBox(
-//                          width: 15,
-//                        ),
-//                        //_colorWidget(LightColor.lightBlue),
-//                        Text(snapshot.data[0]['cidade'] + '-' + snapshot.data[0]['estado'] ?? '',
-//                          style: TextStyle(
-//                              fontWeight: FontWeight.bold,
-//                              fontSize: 16
-//                          ),
-//                        ),
-//                        SizedBox(
-//                          width: 25,
-//                        ),
-//                        IconButton(
-//                          icon: Icon(Icons.pin_drop),
-//                          iconSize: 40,
-//                          color: Colors.red,
-//                          tooltip: 'Localização',
-//                          onPressed: () {
-//
-//                          },
-//                        ),
-//                        RaisedButton(
-//                          onPressed: (){
-//                            goMapa(snapshot.data[0]['latitude'],snapshot.data[0]['longitude']);
-//                          },
-//                          hoverColor: Colors.red,
-//                          color: Colors.white,
-//                          child: Text('Localização'),
-//                        )
-//
-//                      ],
-//                    ),
-//                    SizedBox(
-//                      height: 15,
-//                    ),
-//                    TitleText(
-//                      text: "Telefone",
-//                      fontSize: 18,
-//                    ),
-//                    //SizedBox(height: 20),
-//                    Row(
-//                      mainAxisAlignment: MainAxisAlignment.start,
-//                      children: <Widget>[
-//                        _colorWidget(LightColor.red, isSelected: true),
-//                        SizedBox(
-//                          width: 15,
-//                        ),
-//                        //_colorWidget(LightColor.lightBlue),
-//                        Text(snapshot.data[0]['telefone'].toString() ?? '',
-//                          style: TextStyle(
-//                              fontWeight: FontWeight.bold,
-//                              fontSize: 16
-//                          ),
-//                        )
-//                      ],
-//                    )
-//                  ],
-//                );
-//
-//
-//              }
-//              break;
-//            case ConnectionState.waiting :
-//
-//             return Column(
-//                  mainAxisAlignment: MainAxisAlignment.center,
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                  children: <Widget>[
-//                   CircularProgressIndicator(
-//                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-//                      //backgroundColor: Colors.red,
-//                      strokeWidth: 5,
-//            ),
-//                SizedBox(height: 10,),
-//                Text('Carregando Dados...',
-//                  style: TextStyle(
-//                      color: Colors.red,
-//                      fontWeight: FontWeight.bold,
-//                      fontSize: 20
-//                ),
-//                )
-//          ],
-//          );
-//
-//          break;
-//
-//          case ConnectionState.active :
-//          //print('conexao active');
-//          break;
-//          case ConnectionState.none :
-//          //print('conexao none');
-//          break;
-//        }
-//
-//
-//        });
-//
-//
-//
-//  }
-
-//  Widget _detalhesFWidget() {
-//
-//    return DraggableScrollableSheet(
-//      maxChildSize: .8,
-//      initialChildSize: .53,
-//      minChildSize: .53,
-//      builder: (context, scrollController) {
-//        return Container(
-//          padding: AppTheme.padding.copyWith(bottom: 0),
-//          //padding: EdgeInsets.only(bottom: 0),
-//          decoration: BoxDecoration(
-//              borderRadius: BorderRadius.only(
-//                topLeft: Radius.circular(40),
-//                topRight: Radius.circular(40),
-//              ),
-//              color: Colors.white),
-//          child: SingleChildScrollView(
-//            controller: scrollController,
-//            child: Column(
-//              crossAxisAlignment: CrossAxisAlignment.start,
-//              mainAxisSize: MainAxisSize.max,
-//              children: <Widget>[
-//                SizedBox(height: 5),
-//                Container(
-//                  alignment: Alignment.center,
-//                  child: Container(
-//                    width: 50,
-//                    height: 5,
-//                    decoration: BoxDecoration(
-//                        color: LightColor.iconColor,
-//                        borderRadius: BorderRadius.all(Radius.circular(10))),
-//                  ),
-//                ),
-//                SizedBox(height: 10),
-//                Container(
-//                  child: Row(
-//                    crossAxisAlignment: CrossAxisAlignment.start,
-//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                    children: <Widget>[
-//                      TitleText(text: fornecedor ?? '', fontSize: 25),
-//                      //TitleText(text: 'escapamento'.toUpperCase(), fontSize: 25),
-//                      Column(
-//                        crossAxisAlignment: CrossAxisAlignment.end,
-//                        children: <Widget>[
-//                          Row(
-//                            crossAxisAlignment: CrossAxisAlignment.center,
-//                            children: <Widget>[
-////                              TitleText(
-////                                text: "R\$ ",
-////                                fontSize: 18,
-////                                color: LightColor.red,
-////                              ),
-////                              Text(valor.toString(),
-////                                style: TextStyle(
-////                                    fontSize: 20,
-////                                    color: LightColor.red,
-////                                    fontWeight: FontWeight.bold
-////                                ),
-////                              ),
-//                            ],
-//                          ),
-//                          Row(
-//                            children: <Widget>[
-//                              Icon(Icons.star,
-//                                  color: LightColor.red, size: 17),
-//                              Icon(Icons.star,
-//                                  color: LightColor.red, size: 17),
-//                              Icon(Icons.star,
-//                                  color: LightColor.red, size: 17),
-//                              Icon(Icons.star,
-//                                  color: LightColor.red, size: 17),
-//                              Icon(Icons.star,
-//                                  color: LightColor.red, size: 17),
-//                            ],
-//                          ),
-//                        ],
-//                      ),
-//                    ],
-//                  ),
-//                ),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//
-//                //_dadosFornecedores(),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//                //_availableColor(),
-//                SizedBox(
-//                  height: 20,
-//                ),
-//                //_description(),
-//              ],
-//            ),
-//          ),
-//        );
-//      },
-//    );
-//
-//  }
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {

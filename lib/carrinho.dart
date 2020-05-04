@@ -49,13 +49,13 @@ class _CarrinhoState extends State<Carrinho> {
 
     //print(email);
 
-    _apiC = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_carrinho.php?token=${Constants.token}';
+    _apiC = '${Constants.baseUrlApi}apiRecupera_carrinho.php';
 
     //print(_apiC);
 
     http.Response response;
 
-    response = await http.post(_apiC, body: {'email': email});
+    response = await http.post(_apiC, body: {'email': email, 'token': Constants.token.toString()});
 
 
     _itemsC = json.decode(response.body) as List;
@@ -108,7 +108,7 @@ class _CarrinhoState extends State<Carrinho> {
     } else {
 
       // String apiAumentaQtde
-      String apiaumentaQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiAumenta_qtde.php';
+      String apiaumentaQtde = '${Constants.baseUrlApi}apiAumenta_qtde.php';
 
       String _idcarrinho = idcarrinho.toString();
       String _valor = valor.toString();
@@ -167,7 +167,7 @@ class _CarrinhoState extends State<Carrinho> {
     } else {
 
       // String apiDiminuiQtde
-      String apidiminuiQtde = 'http://www.dsxweb.com/apps/autoparts/api/apiDiminui_qtde.php';
+      String apidiminuiQtde = '${Constants.baseUrlApi}apiDiminui_qtde.php';
 
       String _idcarrinho = idcarrinho.toString();
       String _valor = valor.toString();
@@ -223,7 +223,7 @@ class _CarrinhoState extends State<Carrinho> {
 
 
     // String apiAddCart
-    String apiremoveCart = 'http://www.dsxweb.com/apps/autoparts/api/apiRemove_carrinho.php';
+    String apiremoveCart = '${Constants.baseUrlApi}apiRemove_carrinho.php';
 
     print(apiremoveCart);
 

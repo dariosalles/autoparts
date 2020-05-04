@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'themes/light_color.dart';
+import 'package:auto_parts/utils/app_config.dart';
 
 
 
@@ -28,14 +29,9 @@ class _DetalhesState extends State<Detalhes> {
   String peso;
   String garantia;
 
-  //TOKEN
-  int _token = 123456789;
-
   List _itemsD = [];
   //int _quantD = 0;
   String _apiDetalhes;
-
-
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -54,18 +50,22 @@ class _DetalhesState extends State<Detalhes> {
   }
 
 
-
   // CARREGA OS DADOS - DETALHES DAS PEÇAS
   Future<List> _recuperarDadosPecas() async {
 
-    _apiDetalhes =
-    'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_pecas_detalhes.php?token=$_token&id_peca=$idpecadetalhes';
+    _apiDetalhes = "${Constants.baseUrlApi}apiRecupera_pecas_detalhes.php";
 
     print(_apiDetalhes);
 
+    print("idpeça ${idpecadetalhes}");
+
     http.Response response;
 
-    response = await http.get(_apiDetalhes);
+    //response = await http.post(_apiDetalhes, body: {'token': Constants.token.toString()});
+
+    response = await http.post(_apiDetalhes, body: {'token': Constants.token.toString(), 'id_peca': idpecadetalhes});
+
+    //response = await http.get(_apiDetalhes);
 
     _itemsD = json.decode(response.body) as List;
 
@@ -89,7 +89,7 @@ class _DetalhesState extends State<Detalhes> {
 
 
     // String apiAddCart
-    String apiAddCart = 'http://www.dsxweb.com/apps/autoparts/api/apiInsereCarrinho8.php?token=$_token';
+    String apiAddCart = '${Constants.baseUrlApi}apiInsereCarrinho8.php?token=${Constants.token.toString()}';
 
     print(apiAddCart);
 

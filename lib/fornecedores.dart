@@ -1,10 +1,12 @@
 import 'dart:ui';
 
+import 'package:auto_parts/utils/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'detalhes_fornecedores.dart';
 import 'menuDrawer.dart';
 
 class Fornecedores extends StatefulWidget {
@@ -15,13 +17,6 @@ class Fornecedores extends StatefulWidget {
 class _FornecedoresState extends State<Fornecedores> {
 
   String email;
-
-//  initState() {
-//
-//    _inicialFornecedores();
-//
-//
-//  }
 
   // MENSAGENS AMIGAVEIS
   mensagemToast(String msg) {
@@ -38,9 +33,6 @@ class _FornecedoresState extends State<Fornecedores> {
     );
   }
 
-  //TOKEN
-  int _token = 123456789;
-
   //CONTROLLER - BUSCA - RECUPERA O QUE FOI DIGITADO
   TextEditingController _controllerBuscaF = TextEditingController();
 
@@ -54,25 +46,21 @@ class _FornecedoresState extends State<Fornecedores> {
     String urlF;
 
     var _busca = _controllerBuscaF.text.trim();
-    //print(_busca);
+
 
     if(_busca.isEmpty) {
       setState(() {
-        urlF = "http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token";
+        urlF = "${Constants.baseUrlApi}apiRecupera_fornecedores.php";
       });
 
     } else {
       setState(() {
-        urlF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token&busca=$_busca';
+        urlF = '${Constants.baseUrlApi}apiRecupera_fornecedores.php?busca=$_busca';
       });
-      //print(_busca);
 
-      //print(url);
     }
 
-    //_apiF = 'http://www.dsxweb.com/apps/autoparts/api/apiRecupera_fornecedores.php?token=$_token';
-
-    http.Response response = await http.get(urlF);
+    http.Response response = await http.post(urlF, body: ({"token": Constants.token.toString()}));
 
     _itemsF = json.decode(response.body) as List;
 
@@ -82,14 +70,15 @@ class _FornecedoresState extends State<Fornecedores> {
 
   goDetalhesFornecedores(idfornecedor) async{
 
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString('idfornecedor', idfornecedor);
+    String idf = idfornecedor.toString();
 
-    idfornecedor = sp.getString('idfornecedor');
-
-    print('ID FORNECEDOR: $idfornecedor');
-
-    Navigator.pushNamed(context, '/detalhesfornecedor');
+    // passando pra outra tela utilizando parametros
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          //fullscreenDialog: true,
+          builder: (context) => DetalhesFornecedores(idfdetalhes: idf),
+        ));
   }
 
   @override

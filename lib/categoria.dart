@@ -1,3 +1,4 @@
+import 'package:auto_parts/detalhes_pecas.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -56,7 +57,7 @@ class _CategoriaState extends State<Categoria>  {
 
       //});
 
-      print(urlcat);
+      //print(urlcat);
 
     } else {
 
@@ -64,7 +65,7 @@ class _CategoriaState extends State<Categoria>  {
           urlcat = '${Constants.baseUrlApi}api/apiRecupera_categoria.php?busca=$_buscaCategoria';
         //});
 
-        print(urlcat);
+        //print(urlcat);
     }
 
     //print(urlcat);
@@ -147,14 +148,16 @@ class _CategoriaState extends State<Categoria>  {
 
   goDetalhes(idpeca) async{
 
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString('idpeca', idpeca);
+    String id = idpeca.toString();
 
-    idpeca = sp.getString('idpeca');
+    // passando pra outra tela utilizando parametros
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          //fullscreenDialog: true,
+          builder: (context) => Detalhes(idpecadetalhes: id),
+        ));
 
-    print('ID PECA: $idpeca');
-
-    Navigator.pushNamed(context, '/detalhes');
   }
 
 
