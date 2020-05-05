@@ -9,6 +9,10 @@ import 'package:auto_parts/include_categorias.dart';
 import 'package:auto_parts/utils/app_config.dart';
 
 class Categoria extends StatefulWidget {
+
+  Categoria({ Key key, @required this.idcategoria}) : super(key: key);
+  final String idcategoria;
+
   @override
   _CategoriaState createState() => _CategoriaState();
 }
@@ -44,34 +48,21 @@ class _CategoriaState extends State<Categoria>  {
   Future<List> _recuperarCategoria() async {
 
     //RECUPERA O IDCATEGORIA
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    String id_categoria = sp.getString('id_categoria');
+    String id_categoria = widget.idcategoria.toString();
 
     var _buscaCategoria = _controllerBuscaCategoria.text.trim();
     //print(_buscaCategoria);
 
     if(_buscaCategoria.isEmpty) {
 
-      //setState(() {
         urlcat = "${Constants.baseUrlApi}apiRecupera_categoria.php";
-
-      //});
-
-      //print(urlcat);
 
     } else {
 
-        //setState(() {
           urlcat = '${Constants.baseUrlApi}api/apiRecupera_categoria.php?busca=$_buscaCategoria';
-        //});
 
-        //print(urlcat);
     }
 
-    //print(urlcat);
-
-
-    //http.Response response = await http.get(urlcat);
 
     http.Response response;
 

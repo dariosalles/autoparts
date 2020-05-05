@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'categoria.dart';
+
 class Categorias extends StatefulWidget {
   @override
   _CategoriasState createState() => _CategoriasState();
@@ -284,12 +286,22 @@ class _CategoriasState extends State<Categorias> {
 
   void getCategoria(idcategoria) async{
 
-    // STORAGE - IDCATEGORIA - SET
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setString('id_categoria', idcategoria.toString());
+    String idc = idcategoria.toString();
 
-    // redireciona
-    Navigator.pushNamed(context, '/categoria');
+    // passando pra outra tela utilizando parametros
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          //fullscreenDialog: true,
+          builder: (context) => Categoria(idcategoria: idc),
+        ));
+
+    // STORAGE - IDCATEGORIA - SET
+//    SharedPreferences sp = await SharedPreferences.getInstance();
+//    sp.setString('id_categoria', idcategoria.toString());
+//
+//    // redireciona
+//    Navigator.pushNamed(context, '/categoria');
 
   }
 }
