@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:auto_parts/pecas.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,12 +50,13 @@ Future<Users> fetchUsers() async {
 
   if (response.statusCode == 200) {
 
-//    final r = json.decode(response.body);
-//    print(r);
+    final r = response.body;
+    print(r);
 
     return Users.fromJson(json.decode(response.body));
+
   } else {
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load Users');
   }
 }
 
@@ -102,12 +101,21 @@ class Users {
 
   Users({this.id, this.name, this.password, this.email});
 
-  Users.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    password = json['password'];
-    email = json['email'];
+  factory Users.fromJson(Map<String, dynamic> json) {
+    return Users(
+      id: json['userId'],
+      name: json['name'],
+      password: json['password'],
+      email: json['email'],
+    );
   }
+//
+//  Users.fromJson(Map<String, dynamic> json) {
+//    id = json['id'];
+//    name = json['name'];
+//    password = json['password'];
+//    email = json['email'];
+//  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -165,21 +173,19 @@ class _PedidosState extends State<Pedidos> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fetch Data Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+
+        title: Text('Meus pedidos'),
+        backgroundColor: Color.fromARGB(255, 204, 37, 1),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Fetch Data Example'),
-        ),
+      drawer: MenuDrawer(),
         body: Center(
-          child: FutureBuilder<PecasT>(
-            future: futurePecas,
+          child: FutureBuilder<Users>(
+            future: futureUsers,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return Text(snapshot.data.idCategoria.toString());
+                return Text(snapshot.data.password.toString());
                 //return Text(snapshot.data.email.toString());
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
@@ -190,7 +196,6 @@ class _PedidosState extends State<Pedidos> {
             },
           ),
         ),
-      ),
     );
   }
 }

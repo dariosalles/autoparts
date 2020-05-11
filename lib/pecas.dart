@@ -7,6 +7,8 @@ import 'menuDrawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auto_parts/utils/app_config.dart';
+import 'widgets/custom_text_field.dart';
+import 'widgets/custom_icon_button.dart';
 
 
 // PAGE PEÇAS
@@ -223,47 +225,65 @@ class _PecasState extends State<Pecas>  {
             child: Column(
               children: <Widget>[
                 Categorias(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 250,
-                      child:
-                      TextField(
-                        cursorWidth: 2,
-                        keyboardType: TextInputType.text,
-                        maxLength: 30,
-                        decoration: InputDecoration(
-                            labelText: "Buscar peça",
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        child: CustomTextField(
 
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                gapPadding: 4.00
-                            )
+                          controller: _controllerBusca,
+                          hint: 'Buscar Peça',
+                          onChanged: (_) {},
+                          suffix: CustomIconButton(
+                            radius: 32,
+                            iconData: Icons.search,
+                            onTap: (){
+                              _recuperarPecas();
+                            },
+                          ),
                         ),
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                        controller: _controllerBusca,
                       ),
                     ),
-                    SizedBox(width: 15,),
-                    Container(
-                      width: 100,
-                      child:
-                      RaisedButton(
-                        child: Text('Buscar'),
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        onPressed: (){
-                          _recuperarPecas();
-                        },
-                      ),
 
-                    ),
-                  ],
-                ),
+//                Row(
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  children: <Widget>[
+//                    Container(
+//                      width: 250,
+//                      child:
+//                      TextField(
+//                        cursorWidth: 2,
+//                        keyboardType: TextInputType.text,
+//                        maxLength: 30,
+//                        decoration: InputDecoration(
+//                            labelText: "Buscar peça",
+//                            border: OutlineInputBorder(
+//                                borderRadius: BorderRadius.all(Radius.circular(5)),
+//                                gapPadding: 4.00
+//                            )
+//                        ),
+//                        style: TextStyle(
+//                          fontSize: 20,
+//                          color: Colors.black,
+//                        ),
+//                        controller: _controllerBusca,
+//                      ),
+//                    ),
+//                    SizedBox(width: 15,),
+//                    Container(
+//                      width: 100,
+//                      child:
+//                      RaisedButton(
+//                        child: Text('Buscar'),
+//                        color: Colors.red,
+//                        textColor: Colors.white,
+//                        onPressed: (){
+//                          _recuperarPecas();
+//                        },
+//                      ),
+//
+//                    ),
+//                  ],
+//                ),
 
                 Expanded(
                   child: FutureBuilder(
